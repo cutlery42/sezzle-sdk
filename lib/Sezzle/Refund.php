@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Refund
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * Refund Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'uuid' => 'string',
-        'amount' => '\OpenAPI\Client\Sezzle\Price'
+        'amount' => '\OpenAPI\Client\Sezzle\Price',
     ];
 
     /**
@@ -80,7 +80,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPIFormats = [
         'uuid' => null,
-        'amount' => null
+        'amount' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'uuid' => 'uuid',
-        'amount' => 'amount'
+        'amount' => 'amount',
     ];
 
     /**
@@ -101,7 +101,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'uuid' => 'setUuid',
-        'amount' => 'setAmount'
+        'amount' => 'setAmount',
     ];
 
     /**
@@ -111,7 +111,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'uuid' => 'getUuid',
-        'amount' => 'getAmount'
+        'amount' => 'getAmount',
     ];
 
     /**
@@ -210,7 +210,6 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets uuid
      *
@@ -258,12 +257,13 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -273,7 +273,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -302,7 +302,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

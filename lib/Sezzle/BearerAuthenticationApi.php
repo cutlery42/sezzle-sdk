@@ -1,4 +1,5 @@
 <?php
+
 /**
  * BearerAuthenticationApi
  * PHP version 7.3
@@ -29,8 +30,8 @@ namespace OpenAPI\Client\Sezzle;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
@@ -129,6 +130,7 @@ class BearerAuthenticationApi
     public function postV1Authentication($inline_object)
     {
         list($response) = $this->postV1AuthenticationWithHttpInfo($inline_object);
+
         return $response;
     }
 
@@ -149,6 +151,7 @@ class BearerAuthenticationApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -182,7 +185,7 @@ class BearerAuthenticationApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 201:
                     if ('\OpenAPI\Client\Sezzle\InlineResponse201' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -193,7 +196,7 @@ class BearerAuthenticationApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse201', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -207,9 +210,8 @@ class BearerAuthenticationApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
-
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 201:
@@ -219,8 +221,10 @@ class BearerAuthenticationApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -273,12 +277,13 @@ class BearerAuthenticationApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -347,16 +352,14 @@ class BearerAuthenticationApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
-
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
-
             } else {
                 // for HTTP post (form)
                 $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
@@ -376,6 +379,7 @@ class BearerAuthenticationApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
