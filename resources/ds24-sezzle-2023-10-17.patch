@@ -1,0 +1,1519 @@
+diff --git a/lib/Sezzle/Address.php b/lib/Sezzle/Address.php
+index 5658bd20ce..938acfe32f 100644
+--- a/lib/Sezzle/Address.php
++++ b/lib/Sezzle/Address.php
+@@ -460,7 +460,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -472,7 +472,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -485,7 +485,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -501,7 +501,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -513,7 +513,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Authorization.php b/lib/Sezzle/Authorization.php
+index 1c2948d4f7..3f0a837400 100644
+--- a/lib/Sezzle/Authorization.php
++++ b/lib/Sezzle/Authorization.php
+@@ -445,7 +445,7 @@ class Authorization implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -457,7 +457,7 @@ class Authorization implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -470,7 +470,7 @@ class Authorization implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -486,7 +486,7 @@ class Authorization implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -498,7 +498,7 @@ class Authorization implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Capture.php b/lib/Sezzle/Capture.php
+index 4dabd739e6..ee2385ece8 100644
+--- a/lib/Sezzle/Capture.php
++++ b/lib/Sezzle/Capture.php
+@@ -265,7 +265,7 @@ class Capture implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class Capture implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class Capture implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class Capture implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class Capture implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Customer.php b/lib/Sezzle/Customer.php
+index 8cb9c49272..6ed73d45f8 100644
+--- a/lib/Sezzle/Customer.php
++++ b/lib/Sezzle/Customer.php
+@@ -440,7 +440,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -452,7 +452,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -465,7 +465,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -481,7 +481,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -493,7 +493,7 @@ class Customer implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Discount.php b/lib/Sezzle/Discount.php
+index d85d1094d4..be52ca7aef 100644
+--- a/lib/Sezzle/Discount.php
++++ b/lib/Sezzle/Discount.php
+@@ -271,7 +271,7 @@ class Discount implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -283,7 +283,7 @@ class Discount implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -296,7 +296,7 @@ class Discount implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -312,7 +312,7 @@ class Discount implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -324,7 +324,7 @@ class Discount implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineObject.php b/lib/Sezzle/InlineObject.php
+index 29c54443c3..94025a4f36 100644
+--- a/lib/Sezzle/InlineObject.php
++++ b/lib/Sezzle/InlineObject.php
+@@ -265,7 +265,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineObject1.php b/lib/Sezzle/InlineObject1.php
+index cb33d0ef72..9adc601e59 100644
+--- a/lib/Sezzle/InlineObject1.php
++++ b/lib/Sezzle/InlineObject1.php
+@@ -235,7 +235,7 @@ class InlineObject1 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -247,7 +247,7 @@ class InlineObject1 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -260,7 +260,7 @@ class InlineObject1 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -276,7 +276,7 @@ class InlineObject1 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -288,7 +288,7 @@ class InlineObject1 implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineObject2.php b/lib/Sezzle/InlineObject2.php
+index 127281f461..d281b24074 100644
+--- a/lib/Sezzle/InlineObject2.php
++++ b/lib/Sezzle/InlineObject2.php
+@@ -265,7 +265,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineObject3.php b/lib/Sezzle/InlineObject3.php
+index cbadfc2167..0fca3ac65c 100644
+--- a/lib/Sezzle/InlineObject3.php
++++ b/lib/Sezzle/InlineObject3.php
+@@ -265,7 +265,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse200.php b/lib/Sezzle/InlineResponse200.php
+index 579920b363..a6eb512002 100644
+--- a/lib/Sezzle/InlineResponse200.php
++++ b/lib/Sezzle/InlineResponse200.php
+@@ -295,7 +295,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -307,7 +307,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -320,7 +320,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -336,7 +336,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -348,7 +348,7 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2001.php b/lib/Sezzle/InlineResponse2001.php
+index ee98ccd9cf..6ac0ea829b 100644
+--- a/lib/Sezzle/InlineResponse2001.php
++++ b/lib/Sezzle/InlineResponse2001.php
+@@ -265,7 +265,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2002.php b/lib/Sezzle/InlineResponse2002.php
+index c2d9e34152..a190af1bfa 100644
+--- a/lib/Sezzle/InlineResponse2002.php
++++ b/lib/Sezzle/InlineResponse2002.php
+@@ -235,7 +235,7 @@ class InlineResponse2002 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -247,7 +247,7 @@ class InlineResponse2002 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -260,7 +260,7 @@ class InlineResponse2002 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -276,7 +276,7 @@ class InlineResponse2002 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -288,7 +288,7 @@ class InlineResponse2002 implements ModelInterface, ArrayAccess, \JsonSerializab
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2003.php b/lib/Sezzle/InlineResponse2003.php
+index 2c4aab8c20..508129bc50 100644
+--- a/lib/Sezzle/InlineResponse2003.php
++++ b/lib/Sezzle/InlineResponse2003.php
+@@ -265,7 +265,7 @@ class InlineResponse2003 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class InlineResponse2003 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class InlineResponse2003 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class InlineResponse2003 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class InlineResponse2003 implements ModelInterface, ArrayAccess, \JsonSerializab
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2004.php b/lib/Sezzle/InlineResponse2004.php
+index fb9028b00d..b612b45310 100644
+--- a/lib/Sezzle/InlineResponse2004.php
++++ b/lib/Sezzle/InlineResponse2004.php
+@@ -235,7 +235,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -247,7 +247,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -260,7 +260,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -276,7 +276,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -288,7 +288,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse201.php b/lib/Sezzle/InlineResponse201.php
+index cf7d34e1d2..43fed5c1e0 100644
+--- a/lib/Sezzle/InlineResponse201.php
++++ b/lib/Sezzle/InlineResponse201.php
+@@ -295,7 +295,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -307,7 +307,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -320,7 +320,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -336,7 +336,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -348,7 +348,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2011.php b/lib/Sezzle/InlineResponse2011.php
+index 12678e1470..def295cf8e 100644
+--- a/lib/Sezzle/InlineResponse2011.php
++++ b/lib/Sezzle/InlineResponse2011.php
+@@ -325,7 +325,7 @@ class InlineResponse2011 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -337,7 +337,7 @@ class InlineResponse2011 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -350,7 +350,7 @@ class InlineResponse2011 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -366,7 +366,7 @@ class InlineResponse2011 implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -378,7 +378,7 @@ class InlineResponse2011 implements ModelInterface, ArrayAccess, \JsonSerializab
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2011Order.php b/lib/Sezzle/InlineResponse2011Order.php
+index c3ea9d3f71..8018de6b76 100644
+--- a/lib/Sezzle/InlineResponse2011Order.php
++++ b/lib/Sezzle/InlineResponse2011Order.php
+@@ -295,7 +295,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -307,7 +307,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -320,7 +320,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -336,7 +336,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -348,7 +348,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/InlineResponse2011Tokenize.php b/lib/Sezzle/InlineResponse2011Tokenize.php
+index 522195da89..1390578ff4 100644
+--- a/lib/Sezzle/InlineResponse2011Tokenize.php
++++ b/lib/Sezzle/InlineResponse2011Tokenize.php
+@@ -325,7 +325,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -337,7 +337,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -350,7 +350,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -366,7 +366,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -378,7 +378,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/LineItem.php b/lib/Sezzle/LineItem.php
+index 1af6c9599d..fcbbd1d61f 100644
+--- a/lib/Sezzle/LineItem.php
++++ b/lib/Sezzle/LineItem.php
+@@ -337,7 +337,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -349,7 +349,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -362,7 +362,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -378,7 +378,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -390,7 +390,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Link.php b/lib/Sezzle/Link.php
+index 2018f52c44..4b35460b69 100644
+--- a/lib/Sezzle/Link.php
++++ b/lib/Sezzle/Link.php
+@@ -295,7 +295,7 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -307,7 +307,7 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -320,7 +320,7 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -336,7 +336,7 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -348,7 +348,7 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Notification.php b/lib/Sezzle/Notification.php
+index cbacae974c..57974238ea 100644
+--- a/lib/Sezzle/Notification.php
++++ b/lib/Sezzle/Notification.php
+@@ -295,7 +295,7 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -307,7 +307,7 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -320,7 +320,7 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -336,7 +336,7 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -348,7 +348,7 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Order.php b/lib/Sezzle/Order.php
+index 08980bfb6b..45578fe09d 100644
+--- a/lib/Sezzle/Order.php
++++ b/lib/Sezzle/Order.php
+@@ -525,7 +525,7 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -537,7 +537,7 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -550,7 +550,7 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -566,7 +566,7 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -578,7 +578,7 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/OrderAuthorization.php b/lib/Sezzle/OrderAuthorization.php
+index 9b2e8f3a87..64d3d108cc 100644
+--- a/lib/Sezzle/OrderAuthorization.php
++++ b/lib/Sezzle/OrderAuthorization.php
+@@ -385,7 +385,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -397,7 +397,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -410,7 +410,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -426,7 +426,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -438,7 +438,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Price.php b/lib/Sezzle/Price.php
+index a78b26c7cd..ba2e56bd9a 100644
+--- a/lib/Sezzle/Price.php
++++ b/lib/Sezzle/Price.php
+@@ -271,7 +271,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -283,7 +283,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -296,7 +296,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -312,7 +312,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -324,7 +324,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Refund.php b/lib/Sezzle/Refund.php
+index 84a3f357d0..34745ee0ed 100644
+--- a/lib/Sezzle/Refund.php
++++ b/lib/Sezzle/Refund.php
+@@ -265,7 +265,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class Refund implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Session.php b/lib/Sezzle/Session.php
+index 4843d46d1e..2847ae88bb 100644
+--- a/lib/Sezzle/Session.php
++++ b/lib/Sezzle/Session.php
+@@ -331,7 +331,7 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -343,7 +343,7 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -356,7 +356,7 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -372,7 +372,7 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -384,7 +384,7 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/SessionCancelUrl.php b/lib/Sezzle/SessionCancelUrl.php
+index be2082b60d..a8deffd9bd 100644
+--- a/lib/Sezzle/SessionCancelUrl.php
++++ b/lib/Sezzle/SessionCancelUrl.php
+@@ -265,7 +265,7 @@ class SessionCancelUrl implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class SessionCancelUrl implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class SessionCancelUrl implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class SessionCancelUrl implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class SessionCancelUrl implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/SessionStatus.php b/lib/Sezzle/SessionStatus.php
+index 48de389dad..c2dbaa1eb1 100644
+--- a/lib/Sezzle/SessionStatus.php
++++ b/lib/Sezzle/SessionStatus.php
+@@ -265,7 +265,7 @@ class SessionStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -277,7 +277,7 @@ class SessionStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -290,7 +290,7 @@ class SessionStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -306,7 +306,7 @@ class SessionStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -318,7 +318,7 @@ class SessionStatus implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Token.php b/lib/Sezzle/Token.php
+index a002bc42d2..f9e5f70694 100644
+--- a/lib/Sezzle/Token.php
++++ b/lib/Sezzle/Token.php
+@@ -325,7 +325,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -337,7 +337,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -350,7 +350,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -366,7 +366,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -378,7 +378,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/Webhook.php b/lib/Sezzle/Webhook.php
+index 2bc5617d02..a118782b5c 100644
+--- a/lib/Sezzle/Webhook.php
++++ b/lib/Sezzle/Webhook.php
+@@ -268,7 +268,7 @@ class Webhook implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -280,7 +280,7 @@ class Webhook implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -293,7 +293,7 @@ class Webhook implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -309,7 +309,7 @@ class Webhook implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -321,7 +321,7 @@ class Webhook implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
+diff --git a/lib/Sezzle/WebhookTest.php b/lib/Sezzle/WebhookTest.php
+index e32dee056f..85f9d65c3c 100644
+--- a/lib/Sezzle/WebhookTest.php
++++ b/lib/Sezzle/WebhookTest.php
+@@ -268,7 +268,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return boolean
+      */
+-    public function offsetExists($offset)
++    public function offsetExists($offset): bool
+     {
+         return isset($this->container[$offset]);
+     }
+@@ -280,7 +280,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return mixed|null
+      */
+-    public function offsetGet($offset)
++    public function offsetGet($offset): mixed
+     {
+         return $this->container[$offset] ?? null;
+     }
+@@ -293,7 +293,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetSet($offset, $value)
++    public function offsetSet($offset, $value): void
+     {
+         if (is_null($offset)) {
+             $this->container[] = $value;
+@@ -309,7 +309,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
+      *
+      * @return void
+      */
+-    public function offsetUnset($offset)
++    public function offsetUnset($offset): void
+     {
+         unset($this->container[$offset]);
+     }
+@@ -321,7 +321,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
+      * @return mixed Returns data which can be serialized by json_encode(), which is a value
+      * of any type other than a resource.
+      */
+-    public function jsonSerialize()
++    public function jsonSerialize(): mixed
+     {
+        return ObjectSerializer::sanitizeForSerialization($this);
+     }
