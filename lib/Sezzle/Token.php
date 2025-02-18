@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Token
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * Token Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class Token implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -70,7 +70,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
         'token' => 'string',
         'expiration' => '\DateTime',
         'links' => '\OpenAPI\Client\Sezzle\Link[]',
-        'customer' => '\OpenAPI\Client\Sezzle\InlineResponse200'
+        'customer' => '\OpenAPI\Client\Sezzle\InlineResponse200',
     ];
 
     /**
@@ -84,7 +84,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
         'token' => null,
         'expiration' => 'date-time',
         'links' => null,
-        'customer' => null
+        'customer' => null,
     ];
 
     /**
@@ -97,7 +97,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
         'token' => 'token',
         'expiration' => 'expiration',
         'links' => 'links',
-        'customer' => 'customer'
+        'customer' => 'customer',
     ];
 
     /**
@@ -109,7 +109,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
         'token' => 'setToken',
         'expiration' => 'setExpiration',
         'links' => 'setLinks',
-        'customer' => 'setCustomer'
+        'customer' => 'setCustomer',
     ];
 
     /**
@@ -121,7 +121,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
         'token' => 'getToken',
         'expiration' => 'getExpiration',
         'links' => 'getLinks',
-        'customer' => 'getCustomer'
+        'customer' => 'getCustomer',
     ];
 
     /**
@@ -222,7 +222,6 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets token
      *
@@ -318,12 +317,13 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -333,7 +333,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -362,7 +362,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -380,7 +380,7 @@ class Token implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

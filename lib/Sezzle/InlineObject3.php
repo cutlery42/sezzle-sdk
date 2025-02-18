@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineObject3
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineObject3 Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'intent' => '\OpenAPI\Client\Sezzle\Intent',
-        'upcharge_amount' => '\OpenAPI\Client\Sezzle\Price'
+        'upcharge_amount' => '\OpenAPI\Client\Sezzle\Price',
     ];
 
     /**
@@ -80,7 +80,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPIFormats = [
         'intent' => null,
-        'upcharge_amount' => null
+        'upcharge_amount' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'intent' => 'intent',
-        'upcharge_amount' => 'upcharge_amount'
+        'upcharge_amount' => 'upcharge_amount',
     ];
 
     /**
@@ -101,7 +101,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'intent' => 'setIntent',
-        'upcharge_amount' => 'setUpchargeAmount'
+        'upcharge_amount' => 'setUpchargeAmount',
     ];
 
     /**
@@ -111,7 +111,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'intent' => 'getIntent',
-        'upcharge_amount' => 'getUpchargeAmount'
+        'upcharge_amount' => 'getUpchargeAmount',
     ];
 
     /**
@@ -210,7 +210,6 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets intent
      *
@@ -258,12 +257,13 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -273,7 +273,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -302,7 +302,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class InlineObject3 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

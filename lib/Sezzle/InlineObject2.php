@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineObject2
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineObject2 Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'capture_amount' => '\OpenAPI\Client\Sezzle\Price',
-        'partial_capture' => 'bool'
+        'partial_capture' => 'bool',
     ];
 
     /**
@@ -80,7 +80,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPIFormats = [
         'capture_amount' => null,
-        'partial_capture' => null
+        'partial_capture' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'capture_amount' => 'capture_amount',
-        'partial_capture' => 'partial_capture'
+        'partial_capture' => 'partial_capture',
     ];
 
     /**
@@ -101,7 +101,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'capture_amount' => 'setCaptureAmount',
-        'partial_capture' => 'setPartialCapture'
+        'partial_capture' => 'setPartialCapture',
     ];
 
     /**
@@ -111,7 +111,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'capture_amount' => 'getCaptureAmount',
-        'partial_capture' => 'getPartialCapture'
+        'partial_capture' => 'getPartialCapture',
     ];
 
     /**
@@ -210,7 +210,6 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets capture_amount
      *
@@ -258,12 +257,13 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -273,7 +273,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -302,7 +302,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

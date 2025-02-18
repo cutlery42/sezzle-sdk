@@ -1,4 +1,5 @@
 <?php
+
 /**
  * OrderAuthorization
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * OrderAuthorization Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -72,7 +72,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
         'expiration' => '\DateTime',
         'releases' => '\OpenAPI\Client\Sezzle\Capture[]',
         'captures' => '\OpenAPI\Client\Sezzle\Capture[]',
-        'refunds' => '\OpenAPI\Client\Sezzle\Refund[]'
+        'refunds' => '\OpenAPI\Client\Sezzle\Refund[]',
     ];
 
     /**
@@ -88,7 +88,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
         'expiration' => 'date-time',
         'releases' => null,
         'captures' => null,
-        'refunds' => null
+        'refunds' => null,
     ];
 
     /**
@@ -103,7 +103,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
         'expiration' => 'expiration',
         'releases' => 'releases',
         'captures' => 'captures',
-        'refunds' => 'refunds'
+        'refunds' => 'refunds',
     ];
 
     /**
@@ -117,7 +117,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
         'expiration' => 'setExpiration',
         'releases' => 'setReleases',
         'captures' => 'setCaptures',
-        'refunds' => 'setRefunds'
+        'refunds' => 'setRefunds',
     ];
 
     /**
@@ -131,7 +131,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
         'expiration' => 'getExpiration',
         'releases' => 'getReleases',
         'captures' => 'getCaptures',
-        'refunds' => 'getRefunds'
+        'refunds' => 'getRefunds',
     ];
 
     /**
@@ -233,7 +233,6 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
     {
         return count($this->listInvalidProperties()) === 0;
     }
-
 
     /**
      * Gets authorization_amount
@@ -378,12 +377,13 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -393,7 +393,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -422,7 +422,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -440,7 +440,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
