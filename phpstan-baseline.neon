@@ -1,0 +1,31 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Variable \$inline_object in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 1
+			path: lib/Sezzle/BearerAuthenticationApi.php
+
+		-
+			message: '#^Variable \$inline_object1 in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 1
+			path: lib/Sezzle/OrderApi.php
+
+		-
+			message: '#^Variable \$session in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 1
+			path: lib/Sezzle/SessionApi.php
+
+		-
+			message: '#^Variable \$webhook in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 1
+			path: lib/Sezzle/WebhooksApi.php
+
+		-
+			message: '#^Variable \$webhook_test in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 1
+			path: lib/Sezzle/WebhooksApi.php
