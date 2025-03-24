@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Address
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * Address Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class Address implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -74,7 +74,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
         'postal_code' => 'string',
         'state' => 'string',
         'street' => 'string',
-        'street2' => 'string'
+        'street2' => 'string',
     ];
 
     /**
@@ -92,7 +92,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
         'postal_code' => null,
         'state' => null,
         'street' => null,
-        'street2' => null
+        'street2' => null,
     ];
 
     /**
@@ -109,7 +109,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
         'postal_code' => 'postal_code',
         'state' => 'state',
         'street' => 'street',
-        'street2' => 'street2'
+        'street2' => 'street2',
     ];
 
     /**
@@ -125,7 +125,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
         'postal_code' => 'setPostalCode',
         'state' => 'setState',
         'street' => 'setStreet',
-        'street2' => 'setStreet2'
+        'street2' => 'setStreet2',
     ];
 
     /**
@@ -141,7 +141,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
         'postal_code' => 'getPostalCode',
         'state' => 'getState',
         'street' => 'getStreet',
-        'street2' => 'getStreet2'
+        'street2' => 'getStreet2',
     ];
 
     /**
@@ -247,6 +247,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['street'] === null) {
             $invalidProperties[] = "'street' can't be null";
         }
+
         return $invalidProperties;
     }
 
@@ -260,7 +261,6 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         return count($this->listInvalidProperties()) === 0;
     }
-
 
     /**
      * Gets city
@@ -453,12 +453,13 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -468,7 +469,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -497,7 +498,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -515,7 +516,7 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

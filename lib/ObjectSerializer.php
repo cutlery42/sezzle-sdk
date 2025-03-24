@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ObjectSerializer
  *
@@ -76,6 +77,7 @@ class ObjectSerializer
             foreach ($data as $property => $value) {
                 $data[$property] = self::sanitizeForSerialization($value);
             }
+
             return $data;
         }
 
@@ -93,6 +95,7 @@ class ObjectSerializer
                             $allowedEnumTypes = $callable();
                             if (!in_array($value, $allowedEnumTypes, true)) {
                                 $imploded = implode("', '", $allowedEnumTypes);
+
                                 throw new \InvalidArgumentException("Invalid value for enum '$openAPIType', must be one of: '$imploded'");
                             }
                         }
@@ -102,10 +105,11 @@ class ObjectSerializer
                     }
                 }
             } else {
-                foreach($data as $property => $value) {
+                foreach ($data as $property => $value) {
                     $values[$property] = self::sanitizeForSerialization($value);
                 }
             }
+
             return (object)$values;
         } else {
             return (string)$data;
@@ -138,7 +142,9 @@ class ObjectSerializer
      */
     public static function sanitizeTimestamp($timestamp)
     {
-        if (!is_string($timestamp)) return $timestamp;
+        if (!is_string($timestamp)) {
+            return $timestamp;
+        }
 
         return preg_replace('/(:\d{2}.\d{6})\d*/', '$1', $timestamp);
     }
@@ -298,6 +304,7 @@ class ObjectSerializer
             foreach ($data as $key => $value) {
                 $values[] = self::deserialize($value, $subClass, null);
             }
+
             return $values;
         }
 
@@ -313,14 +320,17 @@ class ObjectSerializer
                     $deserialized[$key] = self::deserialize($value, $subClass, null);
                 }
             }
+
             return $deserialized;
         }
 
         if ($class === 'object') {
             settype($data, 'array');
+
             return $data;
         } elseif ($class === 'mixed') {
             settype($data, gettype($data));
+
             return $data;
         }
 
@@ -339,6 +349,7 @@ class ObjectSerializer
                     error_reporting(0);
                     $returnDateTime = @new \DateTime($data);
                     error_reporting($errorReportingBefore);
+
                     return $returnDateTime;
                 } catch (\Exception $exception) {
                     // Some API's return a date-time with too high nanosecond
@@ -377,6 +388,7 @@ class ObjectSerializer
         /** @psalm-suppress ParadoxicalCondition */
         if (in_array($class, ['\DateTime', '\SplFileObject', 'array', 'bool', 'boolean', 'byte', 'double', 'float', 'int', 'integer', 'mixed', 'number', 'object', 'string', 'void'], true)) {
             settype($data, $class);
+
             return $data;
         }
 
@@ -384,8 +396,10 @@ class ObjectSerializer
         if (method_exists($class, 'getAllowableEnumValues')) {
             if (!in_array($data, $class::getAllowableEnumValues(), true)) {
                 $imploded = implode("', '", $class::getAllowableEnumValues());
+
                 throw new \InvalidArgumentException("Invalid value for enum '$class', must be one of: '$imploded'");
             }
+
             return $data;
         } else {
             $data = is_string($data) ? json_decode($data) : $data;
@@ -412,6 +426,7 @@ class ObjectSerializer
                     $instance->$propertySetter(self::deserialize($propertyValue, $type, null));
                 }
             }
+
             return $instance;
         }
     }

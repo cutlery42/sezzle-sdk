@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineObject
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineObject Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'private_key' => 'string',
-        'public_key' => 'string'
+        'public_key' => 'string',
     ];
 
     /**
@@ -80,7 +80,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPIFormats = [
         'private_key' => null,
-        'public_key' => null
+        'public_key' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'private_key' => 'private_key',
-        'public_key' => 'public_key'
+        'public_key' => 'public_key',
     ];
 
     /**
@@ -101,7 +101,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'private_key' => 'setPrivateKey',
-        'public_key' => 'setPublicKey'
+        'public_key' => 'setPublicKey',
     ];
 
     /**
@@ -111,7 +111,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'private_key' => 'getPrivateKey',
-        'public_key' => 'getPublicKey'
+        'public_key' => 'getPublicKey',
     ];
 
     /**
@@ -210,7 +210,6 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets private_key
      *
@@ -258,12 +257,13 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -273,7 +273,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -302,7 +302,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class InlineObject implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

@@ -33,12 +33,16 @@ phpstan-baseline: build
 psalm: build
     docker run --rm -v ${PWD}:/app {{docker_image}} php -dmemory_limit=-1 vendor/bin/psalm
 
+# Run Psalm analysis
+psalm-baseline: build
+    docker run --rm -v ${PWD}:/app {{docker_image}} php -dmemory_limit=-1 vendor/bin/psalm --set-baseline=psalm-baseline.xml
+
 # Run Rector in dry-run mode
 rector: build
     docker run --rm -v ${PWD}:/app {{docker_image}} php -dmemory_limit=-1 vendor/bin/rector process --dry-run
 
 # Run all static analysis tools
-analyse: phpstan psalm rector style-fix
+analyse: phpstan psalm style-fix
 
 # Run unit tests
 test: build

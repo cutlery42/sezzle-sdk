@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * Price Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class Price implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'amount_in_cents' => 'int',
-        'currency' => 'string'
+        'currency' => 'string',
     ];
 
     /**
@@ -80,7 +80,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPIFormats = [
         'amount_in_cents' => 'int32',
-        'currency' => null
+        'currency' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'amount_in_cents' => 'amount_in_cents',
-        'currency' => 'currency'
+        'currency' => 'currency',
     ];
 
     /**
@@ -101,7 +101,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'amount_in_cents' => 'setAmountInCents',
-        'currency' => 'setCurrency'
+        'currency' => 'setCurrency',
     ];
 
     /**
@@ -111,7 +111,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'amount_in_cents' => 'getAmountInCents',
-        'currency' => 'getCurrency'
+        'currency' => 'getCurrency',
     ];
 
     /**
@@ -202,6 +202,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['currency'] === null) {
             $invalidProperties[] = "'currency' can't be null";
         }
+
         return $invalidProperties;
     }
 
@@ -215,7 +216,6 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         return count($this->listInvalidProperties()) === 0;
     }
-
 
     /**
      * Gets amount_in_cents
@@ -264,12 +264,13 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -279,7 +280,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -308,7 +309,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -326,7 +327,7 @@ class Price implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

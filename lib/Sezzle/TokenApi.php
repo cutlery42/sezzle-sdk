@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TokenApi
  * PHP version 7.3
@@ -29,8 +30,8 @@ namespace OpenAPI\Client\Sezzle;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
@@ -148,6 +149,7 @@ class TokenApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -186,6 +188,7 @@ class TokenApi
         } catch (ApiException $e) {
             switch ($e->getCode()) {
             }
+
             throw $e;
         }
     }
@@ -222,18 +225,18 @@ class TokenApi
      */
     public function getV2CustomerTokenAsyncWithHttpInfo($token)
     {
-        $returnType = '';
         $request = $this->getV2CustomerTokenRequest($token);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {
                     return [null, $response->getStatusCode(), $response->getHeaders()];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -304,7 +307,7 @@ class TokenApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -338,6 +341,7 @@ class TokenApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -360,6 +364,7 @@ class TokenApi
     public function getV2SessionToken($token)
     {
         list($response) = $this->getV2SessionTokenWithHttpInfo($token);
+
         return $response;
     }
 
@@ -380,6 +385,7 @@ class TokenApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -413,7 +419,7 @@ class TokenApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\OpenAPI\Client\Sezzle\Token' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -424,7 +430,7 @@ class TokenApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\Token', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 400:
                     if ('object[]' === '\SplFileObject') {
@@ -436,7 +442,7 @@ class TokenApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -448,7 +454,7 @@ class TokenApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
@@ -460,7 +466,7 @@ class TokenApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -474,7 +480,7 @@ class TokenApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -486,6 +492,7 @@ class TokenApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 400:
                     $data = ObjectSerializer::deserialize(
@@ -494,6 +501,7 @@ class TokenApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -502,6 +510,7 @@ class TokenApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -510,8 +519,10 @@ class TokenApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -564,12 +575,13 @@ class TokenApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -640,7 +652,7 @@ class TokenApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -674,6 +686,7 @@ class TokenApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),

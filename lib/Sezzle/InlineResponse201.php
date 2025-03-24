@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineResponse201
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineResponse201 Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -69,7 +69,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $openAPITypes = [
         'expiration_date' => '\DateTime',
         'merchant_uuid' => 'string',
-        'token' => 'string'
+        'token' => 'string',
     ];
 
     /**
@@ -82,7 +82,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $openAPIFormats = [
         'expiration_date' => 'date-time',
         'merchant_uuid' => null,
-        'token' => null
+        'token' => null,
     ];
 
     /**
@@ -94,7 +94,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $attributeMap = [
         'expiration_date' => 'expiration_date',
         'merchant_uuid' => 'merchant_uuid',
-        'token' => 'token'
+        'token' => 'token',
     ];
 
     /**
@@ -105,7 +105,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $setters = [
         'expiration_date' => 'setExpirationDate',
         'merchant_uuid' => 'setMerchantUuid',
-        'token' => 'setToken'
+        'token' => 'setToken',
     ];
 
     /**
@@ -116,7 +116,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     protected static $getters = [
         'expiration_date' => 'getExpirationDate',
         'merchant_uuid' => 'getMerchantUuid',
-        'token' => 'getToken'
+        'token' => 'getToken',
     ];
 
     /**
@@ -216,7 +216,6 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets expiration_date
      *
@@ -288,12 +287,13 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -303,7 +303,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -332,7 +332,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -350,7 +350,7 @@ class InlineResponse201 implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

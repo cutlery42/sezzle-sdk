@@ -1,0 +1,1498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.9.4@e052de4275fb6cdbfedfef1d883a7e90732ea609">
+  <file src="lib/Configuration.php">
+    <DocblockTypeContradiction>
+      <code><![CDATA[is_string($userAgent)]]></code>
+      <code><![CDATA[self::$defaultConfiguration === null]]></code>
+    </DocblockTypeContradiction>
+    <InvalidReturnStatement>
+      <code><![CDATA[$url]]></code>
+    </InvalidReturnStatement>
+  </file>
+  <file src="lib/ObjectSerializer.php">
+    <ArgumentTypeCoercion>
+      <code><![CDATA[$class]]></code>
+      <code><![CDATA[$class]]></code>
+    </ArgumentTypeCoercion>
+    <DocblockTypeContradiction>
+      <code><![CDATA[is_string($timestamp)]]></code>
+    </DocblockTypeContradiction>
+    <InvalidNullableReturnType>
+      <code><![CDATA[string]]></code>
+      <code><![CDATA[string]]></code>
+    </InvalidNullableReturnType>
+    <InvalidStringClass>
+      <code><![CDATA[$class]]></code>
+      <code><![CDATA[$class::getAllowableEnumValues()]]></code>
+      <code><![CDATA[$class::getAllowableEnumValues()]]></code>
+      <code><![CDATA[new $class()]]></code>
+    </InvalidStringClass>
+    <MissingReturnType>
+      <code><![CDATA[setDateTimeFormat]]></code>
+    </MissingReturnType>
+    <NoValue>
+      <code><![CDATA[return $timestamp;]]></code>
+    </NoValue>
+    <NullableReturnStatement>
+      <code><![CDATA[preg_replace('/%5B[0-9]+%5D=/', '=', http_build_query($collection, '', '&'))]]></code>
+      <code><![CDATA[preg_replace('/(:\d{2}.\d{6})\d*/', '$1', $timestamp)]]></code>
+    </NullableReturnStatement>
+    <PossiblyFalseArgument>
+      <code><![CDATA[$file]]></code>
+      <code><![CDATA[$file]]></code>
+      <code><![CDATA[$filename]]></code>
+      <code><![CDATA[$filename]]></code>
+    </PossiblyFalseArgument>
+    <PossiblyNullArgument>
+      <code><![CDATA[$subClass]]></code>
+    </PossiblyNullArgument>
+    <PossiblyUndefinedArrayOffset>
+      <code><![CDATA[$subClass_array[1]]]></code>
+    </PossiblyUndefinedArrayOffset>
+  </file>
+  <file src="lib/Sezzle/Address.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Authorization.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/BearerAuthenticationApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($inline_object))]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$inline_object === null]]></code>
+      <code><![CDATA[is_array($inline_object)]]></code>
+    </DocblockTypeContradiction>
+    <ImplicitToStringCast>
+      <code><![CDATA[$httpBody]]></code>
+    </ImplicitToStringCast>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$inline_object]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[isset($inline_object)]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse201' === '\SplFileObject']]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="lib/Sezzle/Capture.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Customer.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/CustomerApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($price))]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$customer_uuid === null]]></code>
+      <code><![CDATA[$customer_uuid === null]]></code>
+      <code><![CDATA[$customer_uuid === null]]></code>
+      <code><![CDATA[is_array($customer_uuid)]]></code>
+      <code><![CDATA[is_array($customer_uuid)]]></code>
+      <code><![CDATA[is_array($customer_uuid)]]></code>
+    </DocblockTypeContradiction>
+    <ImplicitToStringCast>
+      <code><![CDATA[$httpBody]]></code>
+    </ImplicitToStringCast>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$customer_uuid]]></code>
+      <code><![CDATA[$customer_uuid]]></code>
+      <code><![CDATA[$customer_uuid]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$customer_uuid !== null]]></code>
+      <code><![CDATA[$customer_uuid !== null]]></code>
+      <code><![CDATA[$customer_uuid !== null]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2001' === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse200[]' === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\SessionStatus' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+    <UndefinedDocblockClass>
+      <code><![CDATA[\OpenAPI\Client\Sezzle\UNKNOWN_BASE_TYPE]]></code>
+      <code><![CDATA[\OpenAPI\Client\Sezzle\UNKNOWN_BASE_TYPE]]></code>
+      <code><![CDATA[\OpenAPI\Client\Sezzle\UNKNOWN_BASE_TYPE]]></code>
+      <code><![CDATA[\OpenAPI\Client\Sezzle\UNKNOWN_BASE_TYPE]]></code>
+      <code><![CDATA[\OpenAPI\Client\Sezzle\UNKNOWN_BASE_TYPE]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="lib/Sezzle/Discount.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineObject.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineObject1.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineObject2.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineObject3.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse200.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2001.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2002.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2003.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2004.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse201.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2011.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2011Order.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/InlineResponse2011Tokenize.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/LineItem.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Link.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Notification.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Order.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/OrderApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($inline_object1))]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($inline_object2))]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($inline_object3))]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($price))]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($price))]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($price))]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$inline_object1 === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[$order_uuid === null]]></code>
+      <code><![CDATA[is_array($inline_object1)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+      <code><![CDATA[is_array($order_uuid)]]></code>
+    </DocblockTypeContradiction>
+    <ImplicitToStringCast>
+      <code><![CDATA[$httpBody]]></code>
+      <code><![CDATA[$httpBody]]></code>
+      <code><![CDATA[$httpBody]]></code>
+      <code><![CDATA[$httpBody]]></code>
+      <code><![CDATA[$httpBody]]></code>
+      <code><![CDATA[$httpBody]]></code>
+    </ImplicitToStringCast>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$inline_object1]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+      <code><![CDATA[$order_uuid]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[$order_uuid !== null]]></code>
+      <code><![CDATA[isset($inline_object1)]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['SessionStatus' === '\SplFileObject']]></code>
+      <code><![CDATA['SessionStatus' === '\SplFileObject']]></code>
+      <code><![CDATA['SessionStatus' === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2002' === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2002' === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2002' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="lib/Sezzle/OrderAuthorization.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Price.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/Refund.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/ReportsApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$payout_uuid === null]]></code>
+      <code><![CDATA[$start_date === null]]></code>
+      <code><![CDATA[$start_date === null]]></code>
+      <code><![CDATA['form' === 'form' && is_array($currency_code)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($currency_code)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($currency_code)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($end_date)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($end_date)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($offset)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($offset)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($start_date)]]></code>
+      <code><![CDATA['form' === 'form' && is_array($start_date)]]></code>
+      <code><![CDATA[is_array($currency_code)]]></code>
+      <code><![CDATA[is_array($currency_code)]]></code>
+      <code><![CDATA[is_array($currency_code)]]></code>
+      <code><![CDATA[is_array($end_date)]]></code>
+      <code><![CDATA[is_array($end_date)]]></code>
+      <code><![CDATA[is_array($offset)]]></code>
+      <code><![CDATA[is_array($offset)]]></code>
+      <code><![CDATA[is_array($payout_uuid)]]></code>
+      <code><![CDATA[is_array($start_date)]]></code>
+      <code><![CDATA[is_array($start_date)]]></code>
+      <code><![CDATA[is_array($start_date)]]></code>
+      <code><![CDATA[is_array($start_date)]]></code>
+    </DocblockTypeContradiction>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$payout_uuid]]></code>
+      <code><![CDATA[$start_date]]></code>
+      <code><![CDATA[$start_date]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantCondition>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+    </RedundantCondition>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$payout_uuid !== null]]></code>
+      <code><![CDATA[$start_date !== null]]></code>
+      <code><![CDATA[$start_date !== null]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2004' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="lib/Sezzle/Session.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/SessionApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($session))]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$session === null]]></code>
+      <code><![CDATA[$session_uuid === null]]></code>
+      <code><![CDATA[is_array($session)]]></code>
+      <code><![CDATA[is_array($session_uuid)]]></code>
+    </DocblockTypeContradiction>
+    <ImplicitToStringCast>
+      <code><![CDATA[$httpBody]]></code>
+    </ImplicitToStringCast>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <InvalidReturnStatement>
+      <code><![CDATA[[
+                        ObjectSerializer::deserialize($content, $request->getMethod() === 'GET' ? SessionStatusExtended::class : SessionStatus::class, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ]]]></code>
+      <code><![CDATA[[
+                        ObjectSerializer::deserialize($content, 'object[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ]]]></code>
+      <code><![CDATA[[
+                        ObjectSerializer::deserialize($content, 'object[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ]]]></code>
+      <code><![CDATA[[
+                        ObjectSerializer::deserialize($content, 'object[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ]]]></code>
+      <code><![CDATA[[
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders(),
+            ]]]></code>
+    </InvalidReturnStatement>
+    <InvalidReturnType>
+      <code><![CDATA[SessionStatusExtended|object[]]]></code>
+    </InvalidReturnType>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$session]]></code>
+      <code><![CDATA[$session_uuid]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$session_uuid !== null]]></code>
+      <code><![CDATA[isset($session)]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['SessionStatus' === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2011' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="lib/Sezzle/SessionCancelUrl.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/SessionStatus.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/SessionStatusExtended.php">
+    <MissingTemplateParam>
+      <code><![CDATA[SessionStatusExtended]]></code>
+    </MissingTemplateParam>
+  </file>
+  <file src="lib/Sezzle/Token.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/TokenApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$token === null]]></code>
+      <code><![CDATA[$token === null]]></code>
+      <code><![CDATA[is_array($token)]]></code>
+      <code><![CDATA[is_array($token)]]></code>
+    </DocblockTypeContradiction>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$token]]></code>
+      <code><![CDATA[$token]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$token !== null]]></code>
+      <code><![CDATA[$token !== null]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\Token' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="lib/Sezzle/Webhook.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/WebhookTest.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[json_encode(
+            ObjectSerializer::sanitizeForSerialization($this),
+            JSON_PRETTY_PRINT
+        )]]></code>
+      <code><![CDATA[json_encode(ObjectSerializer::sanitizeForSerialization($this))]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[string]]></code>
+    </InvalidFalsableReturnType>
+    <InvalidToString>
+      <code><![CDATA[string]]></code>
+    </InvalidToString>
+  </file>
+  <file src="lib/Sezzle/WebhooksApi.php">
+    <DeprecatedFunction>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode($formParams)]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($webhook))]]></code>
+      <code><![CDATA[\GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($webhook_test))]]></code>
+    </DeprecatedFunction>
+    <DocblockTypeContradiction>
+      <code><![CDATA[$webhook === null]]></code>
+      <code><![CDATA[$webhook_test === null]]></code>
+      <code><![CDATA[$webhooks_uuid === null]]></code>
+      <code><![CDATA[$webhooks_uuid === null]]></code>
+      <code><![CDATA[is_array($webhook)]]></code>
+      <code><![CDATA[is_array($webhook_test)]]></code>
+      <code><![CDATA[is_array($webhooks_uuid)]]></code>
+      <code><![CDATA[is_array($webhooks_uuid)]]></code>
+    </DocblockTypeContradiction>
+    <ImplicitToStringCast>
+      <code><![CDATA[$httpBody]]></code>
+      <code><![CDATA[$httpBody]]></code>
+    </ImplicitToStringCast>
+    <InvalidArgument>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$e->getResponse() ? $e->getResponse()->getHeaders() : null]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+      <code><![CDATA[$response->getHeaders()]]></code>
+    </InvalidArgument>
+    <MissingClosureParamType>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$exception]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+      <code><![CDATA[function ($response) {]]></code>
+    </MissingClosureReturnType>
+    <NoValue>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$formParams]]></code>
+      <code><![CDATA[$webhook]]></code>
+      <code><![CDATA[$webhook_test]]></code>
+      <code><![CDATA[$webhooks_uuid]]></code>
+      <code><![CDATA[$webhooks_uuid]]></code>
+    </NoValue>
+    <PossiblyNullReference>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getBody]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+      <code><![CDATA[getHeaders]]></code>
+    </PossiblyNullReference>
+    <RedundantCast>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+      <code><![CDATA[(int) $e->getCode()]]></code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType>
+      <code><![CDATA[$webhooks_uuid !== null]]></code>
+      <code><![CDATA[$webhooks_uuid !== null]]></code>
+      <code><![CDATA[isset($webhook)]]></code>
+      <code><![CDATA[isset($webhook_test)]]></code>
+    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$multipart]]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA[$returnType === '\SplFileObject']]></code>
+      <code><![CDATA['\OpenAPI\Client\Sezzle\InlineResponse2003' === '\SplFileObject']]></code>
+      <code><![CDATA['object' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA['object[]' === '\SplFileObject']]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[400]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[401]]></code>
+      <code><![CDATA[404]]></code>
+      <code><![CDATA[422]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+      <code><![CDATA[count($formParams) > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+</files>

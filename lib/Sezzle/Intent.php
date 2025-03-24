@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Intent
  *
@@ -53,7 +54,7 @@ class Intent
     {
         return [
             self::AUTH,
-            self::CAPTURE
+            self::CAPTURE,
         ];
     }
 }

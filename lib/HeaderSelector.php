@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ApiException
  * PHP version 7.3
@@ -27,7 +28,6 @@
 
 namespace OpenAPI\Client;
 
-
 /**
  * ApiException Class Doc Comment
  *
@@ -53,6 +53,7 @@ class HeaderSelector
         }
 
         $headers['Content-Type'] = $this->selectContentTypeHeader($contentTypes);
+
         return $headers;
     }
 
@@ -65,6 +66,7 @@ class HeaderSelector
         $headers = $this->selectHeaders($accept, []);
 
         unset($headers['Content-Type']);
+
         return $headers;
     }
 

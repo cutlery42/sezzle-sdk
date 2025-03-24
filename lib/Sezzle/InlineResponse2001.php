@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineResponse2001
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineResponse2001 Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
       */
     protected static $openAPITypes = [
         'uuid' => 'string',
-        'approved' => 'bool'
+        'approved' => 'bool',
     ];
 
     /**
@@ -80,7 +80,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
       */
     protected static $openAPIFormats = [
         'uuid' => null,
-        'approved' => null
+        'approved' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $attributeMap = [
         'uuid' => 'uuid',
-        'approved' => 'approved'
+        'approved' => 'approved',
     ];
 
     /**
@@ -101,7 +101,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $setters = [
         'uuid' => 'setUuid',
-        'approved' => 'setApproved'
+        'approved' => 'setApproved',
     ];
 
     /**
@@ -111,7 +111,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     protected static $getters = [
         'uuid' => 'getUuid',
-        'approved' => 'getApproved'
+        'approved' => 'getApproved',
     ];
 
     /**
@@ -210,7 +210,6 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets uuid
      *
@@ -258,12 +257,13 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -273,7 +273,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -302,7 +302,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class InlineResponse2001 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
