@@ -1,4 +1,5 @@
 <?php
+
 /**
  * LineItem
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * LineItem Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -70,7 +70,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'price' => '\OpenAPI\Client\Sezzle\Price',
         'quantity' => 'int',
-        'sku' => 'string'
+        'sku' => 'string',
     ];
 
     /**
@@ -84,7 +84,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => null,
         'price' => null,
         'quantity' => 'int32',
-        'sku' => null
+        'sku' => null,
     ];
 
     /**
@@ -97,7 +97,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'name',
         'price' => 'price',
         'quantity' => 'quantity',
-        'sku' => 'sku'
+        'sku' => 'sku',
     ];
 
     /**
@@ -109,7 +109,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'setName',
         'price' => 'setPrice',
         'quantity' => 'setQuantity',
-        'sku' => 'setSku'
+        'sku' => 'setSku',
     ];
 
     /**
@@ -121,7 +121,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'getName',
         'price' => 'getPrice',
         'quantity' => 'getQuantity',
-        'sku' => 'getSku'
+        'sku' => 'getSku',
     ];
 
     /**
@@ -220,6 +220,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['sku'] === null) {
             $invalidProperties[] = "'sku' can't be null";
         }
+
         return $invalidProperties;
     }
 
@@ -233,7 +234,6 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         return count($this->listInvalidProperties()) === 0;
     }
-
 
     /**
      * Gets name
@@ -330,12 +330,13 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -345,7 +346,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -374,7 +375,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -392,7 +393,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

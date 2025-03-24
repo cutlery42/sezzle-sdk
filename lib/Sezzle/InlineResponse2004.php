@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineResponse2004
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineResponse2004 Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -67,7 +67,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $openAPITypes = [
-        'interest_balance' => 'float'
+        'interest_balance' => 'float',
     ];
 
     /**
@@ -78,7 +78,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'interest_balance' => null
+        'interest_balance' => null,
     ];
 
     /**
@@ -88,7 +88,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'interest_balance' => 'interest_balance'
+        'interest_balance' => 'interest_balance',
     ];
 
     /**
@@ -97,7 +97,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'interest_balance' => 'setInterestBalance'
+        'interest_balance' => 'setInterestBalance',
     ];
 
     /**
@@ -106,7 +106,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'interest_balance' => 'getInterestBalance'
+        'interest_balance' => 'getInterestBalance',
     ];
 
     /**
@@ -204,7 +204,6 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets interest_balance
      *
@@ -228,12 +227,13 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -243,7 +243,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -272,7 +272,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -290,7 +290,7 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

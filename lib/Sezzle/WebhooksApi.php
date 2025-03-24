@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WebhooksApi
  * PHP version 7.3
@@ -29,8 +30,8 @@ namespace OpenAPI\Client\Sezzle;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
@@ -148,6 +149,7 @@ class WebhooksApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -192,6 +194,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -200,8 +203,10 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -238,18 +243,18 @@ class WebhooksApi
      */
     public function deleteV2WebhooksAsyncWithHttpInfo($webhooks_uuid)
     {
-        $returnType = '';
         $request = $this->deleteV2WebhooksRequest($webhooks_uuid);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {
                     return [null, $response->getStatusCode(), $response->getHeaders()];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -320,7 +325,7 @@ class WebhooksApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -354,6 +359,7 @@ class WebhooksApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -376,6 +382,7 @@ class WebhooksApi
     public function getV2Webhook($webhooks_uuid)
     {
         list($response) = $this->getV2WebhookWithHttpInfo($webhooks_uuid);
+
         return $response;
     }
 
@@ -396,6 +403,7 @@ class WebhooksApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -429,7 +437,7 @@ class WebhooksApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('object' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -440,7 +448,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -452,7 +460,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
@@ -464,7 +472,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -478,7 +486,7 @@ class WebhooksApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -490,6 +498,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -498,6 +507,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -506,8 +516,10 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -560,12 +572,13 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -636,7 +649,7 @@ class WebhooksApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -670,6 +683,7 @@ class WebhooksApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -691,6 +705,7 @@ class WebhooksApi
     public function getV2Webhooks()
     {
         list($response) = $this->getV2WebhooksWithHttpInfo();
+
         return $response;
     }
 
@@ -710,6 +725,7 @@ class WebhooksApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -743,7 +759,7 @@ class WebhooksApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -754,7 +770,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 400:
                     if ('object[]' === '\SplFileObject') {
@@ -766,7 +782,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -778,7 +794,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -792,7 +808,7 @@ class WebhooksApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -804,6 +820,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 400:
                     $data = ObjectSerializer::deserialize(
@@ -812,6 +829,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -820,8 +838,10 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -872,12 +892,13 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -933,7 +954,7 @@ class WebhooksApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -967,6 +988,7 @@ class WebhooksApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1008,6 +1030,7 @@ class WebhooksApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -1052,6 +1075,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -1060,8 +1084,10 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -1098,18 +1124,18 @@ class WebhooksApi
      */
     public function postV2WebhookTestAsyncWithHttpInfo($webhook_test)
     {
-        $returnType = '';
         $request = $this->postV2WebhookTestRequest($webhook_test);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {
                     return [null, $response->getStatusCode(), $response->getHeaders()];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -1178,7 +1204,7 @@ class WebhooksApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -1212,6 +1238,7 @@ class WebhooksApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1234,6 +1261,7 @@ class WebhooksApi
     public function postV2Webhooks($webhook)
     {
         list($response) = $this->postV2WebhooksWithHttpInfo($webhook);
+
         return $response;
     }
 
@@ -1254,6 +1282,7 @@ class WebhooksApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -1287,7 +1316,7 @@ class WebhooksApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\OpenAPI\Client\Sezzle\InlineResponse2003' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1298,7 +1327,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2003', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 400:
                     if ('object[]' === '\SplFileObject') {
@@ -1310,7 +1339,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -1322,7 +1351,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
@@ -1334,7 +1363,7 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -1348,7 +1377,7 @@ class WebhooksApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -1360,6 +1389,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 400:
                     $data = ObjectSerializer::deserialize(
@@ -1368,6 +1398,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -1376,6 +1407,7 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
@@ -1384,8 +1416,10 @@ class WebhooksApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -1438,12 +1472,13 @@ class WebhooksApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -1512,7 +1547,7 @@ class WebhooksApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -1546,6 +1581,7 @@ class WebhooksApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),

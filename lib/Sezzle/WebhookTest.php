@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WebhookTest
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * WebhookTest Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -68,7 +68,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'url' => 'string',
-        'event' => 'string'
+        'event' => 'string',
     ];
 
     /**
@@ -80,7 +80,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPIFormats = [
         'url' => null,
-        'event' => null
+        'event' => null,
     ];
 
     /**
@@ -91,7 +91,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'url' => 'url',
-        'event' => 'event'
+        'event' => 'event',
     ];
 
     /**
@@ -101,7 +101,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'url' => 'setUrl',
-        'event' => 'setEvent'
+        'event' => 'setEvent',
     ];
 
     /**
@@ -111,7 +111,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'url' => 'getUrl',
-        'event' => 'getEvent'
+        'event' => 'getEvent',
     ];
 
     /**
@@ -199,6 +199,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['url'] === null) {
             $invalidProperties[] = "'url' can't be null";
         }
+
         return $invalidProperties;
     }
 
@@ -212,7 +213,6 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         return count($this->listInvalidProperties()) === 0;
     }
-
 
     /**
      * Gets url
@@ -261,12 +261,13 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -276,7 +277,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -305,7 +306,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -323,7 +324,7 @@ class WebhookTest implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

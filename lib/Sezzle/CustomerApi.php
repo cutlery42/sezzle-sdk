@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CustomerApi
  * PHP version 7.3
@@ -29,8 +30,8 @@ namespace OpenAPI\Client\Sezzle;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\RequestOptions;
@@ -148,6 +149,7 @@ class CustomerApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -192,6 +194,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -200,8 +203,10 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -238,18 +243,18 @@ class CustomerApi
      */
     public function deleteV2TokenAsyncWithHttpInfo($customer_uuid)
     {
-        $returnType = '';
         $request = $this->deleteV2TokenRequest($customer_uuid);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {
                     return [null, $response->getStatusCode(), $response->getHeaders()];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -320,7 +325,7 @@ class CustomerApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -354,6 +359,7 @@ class CustomerApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -376,6 +382,7 @@ class CustomerApi
     public function getV2Customer($customer_uuid)
     {
         list($response) = $this->getV2CustomerWithHttpInfo($customer_uuid);
+
         return $response;
     }
 
@@ -396,6 +403,7 @@ class CustomerApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -429,7 +437,7 @@ class CustomerApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\OpenAPI\Client\Sezzle\SessionStatus' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -440,7 +448,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\SessionStatus', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -452,7 +460,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
@@ -464,7 +472,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -478,7 +486,7 @@ class CustomerApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -490,6 +498,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -498,6 +507,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -506,8 +516,10 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -560,12 +572,13 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -636,7 +649,7 @@ class CustomerApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -670,6 +683,7 @@ class CustomerApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -691,6 +705,7 @@ class CustomerApi
     public function getV2CustomerList()
     {
         list($response) = $this->getV2CustomerListWithHttpInfo();
+
         return $response;
     }
 
@@ -710,6 +725,7 @@ class CustomerApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -743,7 +759,7 @@ class CustomerApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\OpenAPI\Client\Sezzle\InlineResponse200[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -754,7 +770,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse200[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -766,7 +782,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
@@ -778,7 +794,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -792,7 +808,7 @@ class CustomerApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -804,6 +820,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -812,6 +829,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -820,8 +838,10 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -872,12 +892,13 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -933,7 +954,7 @@ class CustomerApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -967,6 +988,7 @@ class CustomerApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -991,6 +1013,7 @@ class CustomerApi
     public function postV2CustomerOrder($customer_uuid, $sezzle_request_id = null, $unknown_base_type = null)
     {
         list($response) = $this->postV2CustomerOrderWithHttpInfo($customer_uuid, $sezzle_request_id, $unknown_base_type);
+
         return $response;
     }
 
@@ -1013,6 +1036,7 @@ class CustomerApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -1046,7 +1070,7 @@ class CustomerApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\OpenAPI\Client\Sezzle\SessionStatus' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1057,7 +1081,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\SessionStatus', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 400:
                     if ('object[]' === '\SplFileObject') {
@@ -1069,7 +1093,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -1081,7 +1105,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
@@ -1093,7 +1117,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
@@ -1105,7 +1129,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -1119,7 +1143,7 @@ class CustomerApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -1131,6 +1155,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 400:
                     $data = ObjectSerializer::deserialize(
@@ -1139,6 +1164,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -1147,6 +1173,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -1155,6 +1182,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
@@ -1163,8 +1191,10 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -1221,12 +1251,13 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -1309,7 +1340,7 @@ class CustomerApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -1343,6 +1374,7 @@ class CustomerApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1366,6 +1398,7 @@ class CustomerApi
     public function preapproveV2Token($customer_uuid, $price = null)
     {
         list($response) = $this->preapproveV2TokenWithHttpInfo($customer_uuid, $price);
+
         return $response;
     }
 
@@ -1387,6 +1420,7 @@ class CustomerApi
 
         try {
             $options = $this->createHttpClientOption();
+
             try {
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
@@ -1420,7 +1454,7 @@ class CustomerApi
                 );
             }
 
-            switch($statusCode) {
+            switch ($statusCode) {
                 case 200:
                     if ('\OpenAPI\Client\Sezzle\InlineResponse2001' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1431,7 +1465,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2001', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 400:
                     if ('object[]' === '\SplFileObject') {
@@ -1443,7 +1477,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
@@ -1455,7 +1489,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
@@ -1467,7 +1501,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
@@ -1479,7 +1513,7 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, 'object[]', []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
             }
 
@@ -1493,7 +1527,7 @@ class CustomerApi
             return [
                 ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
-                $response->getHeaders()
+                $response->getHeaders(),
             ];
 
         } catch (ApiException $e) {
@@ -1505,6 +1539,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 400:
                     $data = ObjectSerializer::deserialize(
@@ -1513,6 +1548,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
@@ -1521,6 +1557,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
@@ -1529,6 +1566,7 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
@@ -1537,8 +1575,10 @@ class CustomerApi
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
+
                     break;
             }
+
             throw $e;
         }
     }
@@ -1593,12 +1633,13 @@ class CustomerApi
                     return [
                         ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
-                        $response->getHeaders()
+                        $response->getHeaders(),
                     ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
+
                     throw new ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
@@ -1676,7 +1717,7 @@ class CustomerApi
                     foreach ($formParamValueItems as $formParamValueItem) {
                         $multipartContents[] = [
                             'name' => $formParamName,
-                            'contents' => $formParamValueItem
+                            'contents' => $formParamValueItem,
                         ];
                     }
                 }
@@ -1710,6 +1751,7 @@ class CustomerApi
         );
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),

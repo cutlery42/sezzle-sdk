@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineResponse2011Tokenize
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineResponse2011Tokenize Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -70,7 +70,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
         'token' => 'string',
         'expiration' => '\DateTime',
         'approval_url' => 'string',
-        'links' => '\OpenAPI\Client\Sezzle\Link[]'
+        'links' => '\OpenAPI\Client\Sezzle\Link[]',
     ];
 
     /**
@@ -84,7 +84,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
         'token' => null,
         'expiration' => 'date-time',
         'approval_url' => null,
-        'links' => null
+        'links' => null,
     ];
 
     /**
@@ -97,7 +97,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
         'token' => 'token',
         'expiration' => 'expiration',
         'approval_url' => 'approval_url',
-        'links' => 'links'
+        'links' => 'links',
     ];
 
     /**
@@ -109,7 +109,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
         'token' => 'setToken',
         'expiration' => 'setExpiration',
         'approval_url' => 'setApprovalUrl',
-        'links' => 'setLinks'
+        'links' => 'setLinks',
     ];
 
     /**
@@ -121,7 +121,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
         'token' => 'getToken',
         'expiration' => 'getExpiration',
         'approval_url' => 'getApprovalUrl',
-        'links' => 'getLinks'
+        'links' => 'getLinks',
     ];
 
     /**
@@ -222,7 +222,6 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets token
      *
@@ -318,12 +317,13 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -333,7 +333,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -362,7 +362,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -380,7 +380,7 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

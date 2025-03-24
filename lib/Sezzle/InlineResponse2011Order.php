@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InlineResponse2011Order
  *
@@ -28,8 +29,8 @@
 
 namespace OpenAPI\Client\Sezzle;
 
-use \ArrayAccess;
-use \OpenAPI\Client\ObjectSerializer;
+use ArrayAccess;
+use OpenAPI\Client\ObjectSerializer;
 
 /**
  * InlineResponse2011Order Class Doc Comment
@@ -45,7 +46,6 @@ use \OpenAPI\Client\ObjectSerializer;
 class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
-
 
     /**
      * Associative array for storing property values
@@ -69,7 +69,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $openAPITypes = [
         'uuid' => 'string',
         'checkout_url' => 'string',
-        'links' => '\OpenAPI\Client\Sezzle\Link[]'
+        'links' => '\OpenAPI\Client\Sezzle\Link[]',
     ];
 
     /**
@@ -82,7 +82,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $openAPIFormats = [
         'uuid' => null,
         'checkout_url' => null,
-        'links' => null
+        'links' => null,
     ];
 
     /**
@@ -94,7 +94,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $attributeMap = [
         'uuid' => 'uuid',
         'checkout_url' => 'checkout_url',
-        'links' => 'links'
+        'links' => 'links',
     ];
 
     /**
@@ -105,7 +105,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $setters = [
         'uuid' => 'setUuid',
         'checkout_url' => 'setCheckoutUrl',
-        'links' => 'setLinks'
+        'links' => 'setLinks',
     ];
 
     /**
@@ -116,7 +116,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     protected static $getters = [
         'uuid' => 'getUuid',
         'checkout_url' => 'getCheckoutUrl',
-        'links' => 'getLinks'
+        'links' => 'getLinks',
     ];
 
     /**
@@ -216,7 +216,6 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
         return count($this->listInvalidProperties()) === 0;
     }
 
-
     /**
      * Gets uuid
      *
@@ -288,12 +287,13 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
 
         return $this;
     }
+
     /**
      * Returns true if offset exists. False otherwise.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -303,7 +303,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Gets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return mixed|null
      */
@@ -332,7 +332,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Unsets offset.
      *
-     * @param integer $offset Offset
+     * @param int $offset Offset
      *
      * @return void
      */
@@ -350,7 +350,7 @@ class InlineResponse2011Order implements ModelInterface, ArrayAccess, \JsonSeria
      */
     public function jsonSerialize(): mixed
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+        return ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**

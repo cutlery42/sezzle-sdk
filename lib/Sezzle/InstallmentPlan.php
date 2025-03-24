@@ -1,4 +1,5 @@
 <?php
+
 /**
  * InstallmentPlan
  *
@@ -56,7 +57,7 @@ class InstallmentPlan
         return [
             self::_4_PAY_BIWEEKLY,
             self::_4_PAY_MONTHLY,
-            self::_6_PAY_MONTHLY
+            self::_6_PAY_MONTHLY,
         ];
     }
 }
