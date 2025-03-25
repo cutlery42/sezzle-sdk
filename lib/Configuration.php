@@ -104,15 +104,10 @@ class Configuration
 
     /**
      * Debug file location (log to STDOUT by default)
-     *
-     * @var string
      */
-    protected $tempFolderPath;
+    protected string $tempFolderPath;
 
-    /**
-     * @var Configuration
-     */
-    private static $defaultConfiguration;
+    private static ?\OpenAPI\Client\Configuration $defaultConfiguration = null;
 
     /**
      * Constructor
@@ -130,7 +125,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setApiKey($apiKeyIdentifier, $key)
+    public function setApiKey($apiKeyIdentifier, $key): static
     {
         $this->apiKeys[$apiKeyIdentifier] = $key;
 
@@ -146,7 +141,7 @@ class Configuration
      */
     public function getApiKey($apiKeyIdentifier)
     {
-        return isset($this->apiKeys[$apiKeyIdentifier]) ? $this->apiKeys[$apiKeyIdentifier] : null;
+        return $this->apiKeys[$apiKeyIdentifier] ?? null;
     }
 
     /**
@@ -157,7 +152,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setApiKeyPrefix($apiKeyIdentifier, $prefix)
+    public function setApiKeyPrefix($apiKeyIdentifier, $prefix): static
     {
         $this->apiKeyPrefixes[$apiKeyIdentifier] = $prefix;
 
@@ -173,7 +168,7 @@ class Configuration
      */
     public function getApiKeyPrefix($apiKeyIdentifier)
     {
-        return isset($this->apiKeyPrefixes[$apiKeyIdentifier]) ? $this->apiKeyPrefixes[$apiKeyIdentifier] : null;
+        return $this->apiKeyPrefixes[$apiKeyIdentifier] ?? null;
     }
 
     /**
@@ -183,7 +178,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setAccessToken($accessToken)
+    public function setAccessToken($accessToken): static
     {
         $this->accessToken = $accessToken;
 
@@ -207,7 +202,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setUsername($username)
+    public function setUsername($username): static
     {
         $this->username = $username;
 
@@ -231,7 +226,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setPassword($password)
+    public function setPassword($password): static
     {
         $this->password = $password;
 
@@ -255,7 +250,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setHost($host)
+    public function setHost($host): static
     {
         $this->host = $host;
 
@@ -280,7 +275,7 @@ class Configuration
      * @throws \InvalidArgumentException
      * @return $this
      */
-    public function setUserAgent($userAgent)
+    public function setUserAgent($userAgent): static
     {
         if (!is_string($userAgent)) {
             throw new \InvalidArgumentException('User-agent must be a string.');
@@ -308,7 +303,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setDebug($debug)
+    public function setDebug($debug): static
     {
         $this->debug = $debug;
 
@@ -332,7 +327,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setDebugFile($debugFile)
+    public function setDebugFile($debugFile): static
     {
         $this->debugFile = $debugFile;
 
@@ -356,7 +351,7 @@ class Configuration
      *
      * @return $this
      */
-    public function setTempFolderPath($tempFolderPath)
+    public function setTempFolderPath(string $tempFolderPath): static
     {
         $this->tempFolderPath = $tempFolderPath;
 
@@ -368,19 +363,17 @@ class Configuration
      *
      * @return string Temp folder path
      */
-    public function getTempFolderPath()
+    public function getTempFolderPath(): string
     {
         return $this->tempFolderPath;
     }
 
     /**
      * Gets the default configuration instance
-     *
-     * @return Configuration
      */
-    public static function getDefaultConfiguration()
+    public static function getDefaultConfiguration(): \OpenAPI\Client\Configuration
     {
-        if (self::$defaultConfiguration === null) {
+        if (!self::$defaultConfiguration instanceof \OpenAPI\Client\Configuration) {
             self::$defaultConfiguration = new Configuration();
         }
 
@@ -390,13 +383,11 @@ class Configuration
     /**
      * Sets the default configuration instance
      *
-     * @param Configuration $config An instance of the Configuration Object
-     *
-     * @return void
+     * @param Configuration $configuration An instance of the Configuration Object
      */
-    public static function setDefaultConfiguration(Configuration $config)
+    public static function setDefaultConfiguration(Configuration $configuration): void
     {
-        self::$defaultConfiguration = $config;
+        self::$defaultConfiguration = $configuration;
     }
 
     /**
@@ -404,15 +395,14 @@ class Configuration
      *
      * @return string The report for debugging
      */
-    public static function toDebugReport()
+    public static function toDebugReport(): string
     {
         $report = 'PHP SDK (OpenAPI\Client) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
         $report .= '    The version of the OpenAPI document: 2.0.0' . PHP_EOL;
-        $report .= '    Temp Folder Path: ' . self::getDefaultConfiguration()->getTempFolderPath() . PHP_EOL;
 
-        return $report;
+        return $report . ('    Temp Folder Path: ' . self::getDefaultConfiguration()->getTempFolderPath() . PHP_EOL);
     }
 
     /**
@@ -432,12 +422,10 @@ class Configuration
         }
 
         if ($prefix === null) {
-            $keyWithPrefix = $apiKey;
-        } else {
-            $keyWithPrefix = $prefix . ' ' . $apiKey;
+            return $apiKey;
         }
 
-        return $keyWithPrefix;
+        return $prefix . ' ' . $apiKey;
     }
 
     /**
@@ -445,7 +433,7 @@ class Configuration
      *
      * @return array an array of host settings
      */
-    public function getHostSettings()
+    public function getHostSettings(): array
     {
         return [
             [
@@ -484,7 +472,7 @@ class Configuration
 
         // check array index out of bound
         if ($index < 0 || $index >= count($hosts)) {
-            throw new \InvalidArgumentException("Invalid index $index when selecting the host. Must be less than ".count($hosts));
+            throw new \InvalidArgumentException(sprintf('Invalid index %d when selecting the host. Must be less than ', $index).count($hosts));
         }
 
         $host = $hosts[$index];
@@ -496,7 +484,7 @@ class Configuration
                 if (in_array($variables[$name], $variable["enum_values"], true)) { // check to see if the value is in the enum
                     $url = str_replace("{".$name."}", $variables[$name], $url);
                 } else {
-                    throw new \InvalidArgumentException("The variable `$name` in the host URL has invalid value ".$variables[$name].". Must be ".implode(',', $variable["enum_values"]).".");
+                    throw new \InvalidArgumentException(sprintf('The variable `%s` in the host URL has invalid value ', $name).$variables[$name].". Must be ".implode(',', $variable["enum_values"]).".");
                 }
             } else {
                 // use default value

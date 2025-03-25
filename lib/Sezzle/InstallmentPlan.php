@@ -52,7 +52,7 @@ class InstallmentPlan
      * Gets allowable values of the enum
      * @return string[]
      */
-    public static function getAllowableEnumValues()
+    public static function getAllowableEnumValues(): array
     {
         return [
             self::_4_PAY_BIWEEKLY,

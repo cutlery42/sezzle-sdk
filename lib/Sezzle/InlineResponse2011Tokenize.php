@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSerializable
+class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -204,11 +204,9 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -217,9 +215,9 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -236,10 +234,8 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      * Sets token
      *
      * @param string|null $token token
-     *
-     * @return self
      */
-    public function setToken($token)
+    public function setToken($token): static
     {
         $this->container['token'] = $token;
 
@@ -260,10 +256,8 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      * Sets expiration
      *
      * @param \DateTime|null $expiration expiration
-     *
-     * @return self
      */
-    public function setExpiration($expiration)
+    public function setExpiration($expiration): static
     {
         $this->container['expiration'] = $expiration;
 
@@ -284,10 +278,8 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      * Sets approval_url
      *
      * @param string|null $approval_url approval_url
-     *
-     * @return self
      */
-    public function setApprovalUrl($approval_url)
+    public function setApprovalUrl($approval_url): static
     {
         $this->container['approval_url'] = $approval_url;
 
@@ -308,10 +300,8 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      * Sets links
      *
      * @param \OpenAPI\Client\Sezzle\Link[]|null $links links
-     *
-     * @return self
      */
-    public function setLinks($links)
+    public function setLinks($links): static
     {
         $this->container['links'] = $links;
 
@@ -322,8 +312,6 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -347,8 +335,6 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -363,8 +349,6 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -385,12 +369,10 @@ class InlineResponse2011Tokenize implements ModelInterface, ArrayAccess, \JsonSe
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

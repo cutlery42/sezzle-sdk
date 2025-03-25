@@ -50,42 +50,24 @@ use OpenAPI\Client\ObjectSerializer;
  */
 class ReportsApi
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected \GuzzleHttp\ClientInterface $client;
+
+    protected \OpenAPI\Client\Configuration $config;
+
+    protected \OpenAPI\Client\HeaderSelector $headerSelector;
 
     /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        Configuration $configuration = null,
+        HeaderSelector $headerSelector = null,
+        protected $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
-        $this->hostIndex = $hostIndex;
+        $this->config = $configuration ?: new Configuration();
+        $this->headerSelector = $headerSelector ?: new HeaderSelector();
     }
 
     /**
@@ -108,10 +90,7 @@ class ReportsApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): \OpenAPI\Client\Configuration
     {
         return $this->config;
     }
@@ -132,7 +111,7 @@ class ReportsApi
      */
     public function getInterestAccountActivity($start_date, $end_date = null, $offset = null, $currency_code = null)
     {
-        list($response) = $this->getInterestAccountActivityWithHttpInfo($start_date, $end_date, $offset, $currency_code);
+        [$response] = $this->getInterestAccountActivityWithHttpInfo($start_date, $end_date, $offset, $currency_code);
 
         return $response;
     }
@@ -162,14 +141,14 @@ class ReportsApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -231,29 +210,29 @@ class ReportsApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         '\SplFileObject',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -268,15 +247,12 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getInterestAccountActivityAsync($start_date, $end_date = null, $offset = null, $currency_code = null)
+    public function getInterestAccountActivityAsync($start_date, $end_date = null, $offset = null, $currency_code = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getInterestAccountActivityAsyncWithHttpInfo($start_date, $end_date, $offset, $currency_code)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -291,9 +267,8 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getInterestAccountActivityAsyncWithHttpInfo($start_date, $end_date = null, $offset = null, $currency_code = null)
+    public function getInterestAccountActivityAsyncWithHttpInfo($start_date, $end_date = null, $offset = null, $currency_code = null): \GuzzleHttp\Promise\PromiseInterface
     {
         $returnType = '\SplFileObject';
         $request = $this->getInterestAccountActivityRequest($start_date, $end_date, $offset, $currency_code);
@@ -301,7 +276,7 @@ class ReportsApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -314,7 +289,7 @@ class ReportsApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -341,12 +316,11 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getInterestAccountActivityRequest($start_date, $end_date = null, $offset = null, $currency_code = null)
+    public function getInterestAccountActivityRequest($start_date, $end_date = null, $offset = null, $currency_code = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'start_date' is set
-        if ($start_date === null || (is_array($start_date) && count($start_date) === 0)) {
+        if ($start_date === null || (is_array($start_date) && $start_date === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $start_date when calling getInterestAccountActivity'
             );
@@ -358,20 +332,18 @@ class ReportsApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+        // query params
+        if (is_array($start_date)) {
+            foreach ($start_date as $key => $value) {
+                $queryParams[$key] = $value;
+            }
+        } else {
+            $queryParams['start-date'] = $start_date;
+        }
 
         // query params
-        if ($start_date !== null) {
-            if ('form' === 'form' && is_array($start_date)) {
-                foreach ($start_date as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['start-date'] = $start_date;
-            }
-        }
-        // query params
         if ($end_date !== null) {
-            if ('form' === 'form' && is_array($end_date)) {
+            if (is_array($end_date)) {
                 foreach ($end_date as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -379,9 +351,10 @@ class ReportsApi
                 $queryParams['end-date'] = $end_date;
             }
         }
+
         // query params
         if ($offset !== null) {
-            if ('form' === 'form' && is_array($offset)) {
+            if (is_array($offset)) {
                 foreach ($offset as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -389,9 +362,10 @@ class ReportsApi
                 $queryParams['offset'] = $offset;
             }
         }
+
         // query params
         if ($currency_code !== null) {
-            if ('form' === 'form' && is_array($currency_code)) {
+            if (is_array($currency_code)) {
                 foreach ($currency_code as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -415,7 +389,7 @@ class ReportsApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -427,6 +401,7 @@ class ReportsApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -460,7 +435,7 @@ class ReportsApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -479,7 +454,7 @@ class ReportsApi
      */
     public function getInterestAccountBalance($currency_code = null)
     {
-        list($response) = $this->getInterestAccountBalanceWithHttpInfo($currency_code);
+        [$response] = $this->getInterestAccountBalanceWithHttpInfo($currency_code);
 
         return $response;
     }
@@ -506,14 +481,14 @@ class ReportsApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -537,14 +512,14 @@ class ReportsApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse2004' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\InlineResponse2004::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2004', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse2004::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
@@ -562,7 +537,7 @@ class ReportsApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2004';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse2004::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -575,29 +550,29 @@ class ReportsApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse2004',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\InlineResponse2004::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -609,15 +584,12 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getInterestAccountBalanceAsync($currency_code = null)
+    public function getInterestAccountBalanceAsync($currency_code = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getInterestAccountBalanceAsyncWithHttpInfo($currency_code)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -629,17 +601,16 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getInterestAccountBalanceAsyncWithHttpInfo($currency_code = null)
+    public function getInterestAccountBalanceAsyncWithHttpInfo($currency_code = null): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2004';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse2004::class;
         $request = $this->getInterestAccountBalanceRequest($currency_code);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -652,7 +623,7 @@ class ReportsApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -676,9 +647,8 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getInterestAccountBalanceRequest($currency_code = null)
+    public function getInterestAccountBalanceRequest($currency_code = null): \GuzzleHttp\Psr7\Request
     {
 
         $resourcePath = '/interest/balance';
@@ -690,7 +660,7 @@ class ReportsApi
 
         // query params
         if ($currency_code !== null) {
-            if ('form' === 'form' && is_array($currency_code)) {
+            if (is_array($currency_code)) {
                 foreach ($currency_code as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -714,7 +684,7 @@ class ReportsApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -726,6 +696,7 @@ class ReportsApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -759,7 +730,7 @@ class ReportsApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -778,7 +749,7 @@ class ReportsApi
      */
     public function getSettlementDetails($payout_uuid)
     {
-        list($response) = $this->getSettlementDetailsWithHttpInfo($payout_uuid);
+        [$response] = $this->getSettlementDetailsWithHttpInfo($payout_uuid);
 
         return $response;
     }
@@ -805,14 +776,14 @@ class ReportsApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -874,29 +845,29 @@ class ReportsApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         '\SplFileObject',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -908,15 +879,12 @@ class ReportsApi
      * @param  string $payout_uuid Payout UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSettlementDetailsAsync($payout_uuid)
+    public function getSettlementDetailsAsync($payout_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getSettlementDetailsAsyncWithHttpInfo($payout_uuid)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -928,9 +896,8 @@ class ReportsApi
      * @param  string $payout_uuid Payout UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSettlementDetailsAsyncWithHttpInfo($payout_uuid)
+    public function getSettlementDetailsAsyncWithHttpInfo($payout_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         $returnType = '\SplFileObject';
         $request = $this->getSettlementDetailsRequest($payout_uuid);
@@ -938,7 +905,7 @@ class ReportsApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -951,7 +918,7 @@ class ReportsApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -975,12 +942,11 @@ class ReportsApi
      * @param  string $payout_uuid Payout UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getSettlementDetailsRequest($payout_uuid)
+    public function getSettlementDetailsRequest($payout_uuid): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'payout_uuid' is set
-        if ($payout_uuid === null || (is_array($payout_uuid) && count($payout_uuid) === 0)) {
+        if ($payout_uuid === null || (is_array($payout_uuid) && $payout_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $payout_uuid when calling getSettlementDetails'
             );
@@ -996,13 +962,11 @@ class ReportsApi
 
 
         // path params
-        if ($payout_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'payout_uuid' . '}',
-                ObjectSerializer::toPathValue($payout_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{payout_uuid}',
+            ObjectSerializer::toPathValue($payout_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -1017,7 +981,7 @@ class ReportsApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1029,6 +993,7 @@ class ReportsApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -1062,7 +1027,7 @@ class ReportsApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1084,7 +1049,7 @@ class ReportsApi
      */
     public function getSettlementSummaries($start_date, $end_date = null, $offset = null, $currency_code = null)
     {
-        list($response) = $this->getSettlementSummariesWithHttpInfo($start_date, $end_date, $offset, $currency_code);
+        [$response] = $this->getSettlementSummariesWithHttpInfo($start_date, $end_date, $offset, $currency_code);
 
         return $response;
     }
@@ -1114,14 +1079,14 @@ class ReportsApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -1145,17 +1110,6 @@ class ReportsApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1183,29 +1137,21 @@ class ReportsApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -1220,15 +1166,12 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSettlementSummariesAsync($start_date, $end_date = null, $offset = null, $currency_code = null)
+    public function getSettlementSummariesAsync($start_date, $end_date = null, $offset = null, $currency_code = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getSettlementSummariesAsyncWithHttpInfo($start_date, $end_date, $offset, $currency_code)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -1243,9 +1186,8 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSettlementSummariesAsyncWithHttpInfo($start_date, $end_date = null, $offset = null, $currency_code = null)
+    public function getSettlementSummariesAsyncWithHttpInfo($start_date, $end_date = null, $offset = null, $currency_code = null): \GuzzleHttp\Promise\PromiseInterface
     {
         $returnType = 'object[]';
         $request = $this->getSettlementSummariesRequest($start_date, $end_date, $offset, $currency_code);
@@ -1253,7 +1195,7 @@ class ReportsApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -1266,7 +1208,7 @@ class ReportsApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -1293,12 +1235,11 @@ class ReportsApi
      * @param  string $currency_code ISO-4217 Currency Code (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getSettlementSummariesRequest($start_date, $end_date = null, $offset = null, $currency_code = null)
+    public function getSettlementSummariesRequest($start_date, $end_date = null, $offset = null, $currency_code = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'start_date' is set
-        if ($start_date === null || (is_array($start_date) && count($start_date) === 0)) {
+        if ($start_date === null || (is_array($start_date) && $start_date === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $start_date when calling getSettlementSummaries'
             );
@@ -1310,20 +1251,18 @@ class ReportsApi
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+        // query params
+        if (is_array($start_date)) {
+            foreach ($start_date as $key => $value) {
+                $queryParams[$key] = $value;
+            }
+        } else {
+            $queryParams['start-date'] = $start_date;
+        }
 
         // query params
-        if ($start_date !== null) {
-            if ('form' === 'form' && is_array($start_date)) {
-                foreach ($start_date as $key => $value) {
-                    $queryParams[$key] = $value;
-                }
-            } else {
-                $queryParams['start-date'] = $start_date;
-            }
-        }
-        // query params
         if ($end_date !== null) {
-            if ('form' === 'form' && is_array($end_date)) {
+            if (is_array($end_date)) {
                 foreach ($end_date as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -1331,9 +1270,10 @@ class ReportsApi
                 $queryParams['end-date'] = $end_date;
             }
         }
+
         // query params
         if ($offset !== null) {
-            if ('form' === 'form' && is_array($offset)) {
+            if (is_array($offset)) {
                 foreach ($offset as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -1341,9 +1281,10 @@ class ReportsApi
                 $queryParams['offset'] = $offset;
             }
         }
+
         // query params
         if ($currency_code !== null) {
-            if ('form' === 'form' && is_array($currency_code)) {
+            if (is_array($currency_code)) {
                 foreach ($currency_code as $key => $value) {
                     $queryParams[$key] = $value;
                 }
@@ -1367,7 +1308,7 @@ class ReportsApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1379,6 +1320,7 @@ class ReportsApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -1412,7 +1354,7 @@ class ReportsApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1424,7 +1366,7 @@ class ReportsApi
      * @throws \RuntimeException on file opening failure
      * @return array of http client options
      */
-    protected function createHttpClientOption()
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

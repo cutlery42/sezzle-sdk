@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class Address implements ModelInterface, ArrayAccess, \JsonSerializable
+class Address implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -228,22 +228,26 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
         $invalidProperties = [];
 
         if ($this->container['city'] === null) {
             $invalidProperties[] = "'city' can't be null";
         }
+
         if ($this->container['country_code'] === null) {
             $invalidProperties[] = "'country_code' can't be null";
         }
+
         if ($this->container['postal_code'] === null) {
             $invalidProperties[] = "'postal_code' can't be null";
         }
+
         if ($this->container['state'] === null) {
             $invalidProperties[] = "'state' can't be null";
         }
+
         if ($this->container['street'] === null) {
             $invalidProperties[] = "'street' can't be null";
         }
@@ -257,9 +261,9 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -276,10 +280,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets city
      *
      * @param string $city city
-     *
-     * @return self
      */
-    public function setCity($city)
+    public function setCity($city): static
     {
         $this->container['city'] = $city;
 
@@ -300,10 +302,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets country_code
      *
      * @param string $country_code country_code
-     *
-     * @return self
      */
-    public function setCountryCode($country_code)
+    public function setCountryCode($country_code): static
     {
         $this->container['country_code'] = $country_code;
 
@@ -324,10 +324,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets name
      *
      * @param string|null $name name
-     *
-     * @return self
      */
-    public function setName($name)
+    public function setName($name): static
     {
         $this->container['name'] = $name;
 
@@ -348,10 +346,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets phone
      *
      * @param string|null $phone phone
-     *
-     * @return self
      */
-    public function setPhone($phone)
+    public function setPhone($phone): static
     {
         $this->container['phone'] = $phone;
 
@@ -372,10 +368,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets postal_code
      *
      * @param string $postal_code postal_code
-     *
-     * @return self
      */
-    public function setPostalCode($postal_code)
+    public function setPostalCode($postal_code): static
     {
         $this->container['postal_code'] = $postal_code;
 
@@ -396,10 +390,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets state
      *
      * @param string $state state
-     *
-     * @return self
      */
-    public function setState($state)
+    public function setState($state): static
     {
         $this->container['state'] = $state;
 
@@ -420,10 +412,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets street
      *
      * @param string $street street
-     *
-     * @return self
      */
-    public function setStreet($street)
+    public function setStreet($street): static
     {
         $this->container['street'] = $street;
 
@@ -444,10 +434,8 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets street2
      *
      * @param string|null $street2 street2
-     *
-     * @return self
      */
-    public function setStreet2($street2)
+    public function setStreet2($street2): static
     {
         $this->container['street2'] = $street2;
 
@@ -458,8 +446,6 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -483,8 +469,6 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -499,8 +483,6 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -521,12 +503,10 @@ class Address implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

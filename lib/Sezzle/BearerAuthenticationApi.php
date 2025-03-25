@@ -50,42 +50,24 @@ use OpenAPI\Client\ObjectSerializer;
  */
 class BearerAuthenticationApi
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected \GuzzleHttp\ClientInterface $client;
+
+    protected \OpenAPI\Client\Configuration $config;
+
+    protected \OpenAPI\Client\HeaderSelector $headerSelector;
 
     /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        Configuration $configuration = null,
+        HeaderSelector $headerSelector = null,
+        protected $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
-        $this->hostIndex = $hostIndex;
+        $this->config = $configuration ?: new Configuration();
+        $this->headerSelector = $headerSelector ?: new HeaderSelector();
     }
 
     /**
@@ -108,10 +90,7 @@ class BearerAuthenticationApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): \OpenAPI\Client\Configuration
     {
         return $this->config;
     }
@@ -129,7 +108,7 @@ class BearerAuthenticationApi
      */
     public function postV1Authentication($inline_object)
     {
-        list($response) = $this->postV1AuthenticationWithHttpInfo($inline_object);
+        [$response] = $this->postV1AuthenticationWithHttpInfo($inline_object);
 
         return $response;
     }
@@ -156,14 +135,14 @@ class BearerAuthenticationApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -185,22 +164,21 @@ class BearerAuthenticationApi
                 );
             }
 
-            switch ($statusCode) {
-                case 201:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse201' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
+            if ($statusCode === 201) {
+                if (\OpenAPI\Client\Sezzle\InlineResponse201::class === '\SplFileObject') {
+                    $content = $response->getBody(); //stream goes to serializer
+                } else {
+                    $content = (string) $response->getBody();
+                }
 
-                    return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse201', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
+                return [
+                    ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse201::class, []),
+                    $response->getStatusCode(),
+                    $response->getHeaders(),
+                ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse201';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse201::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -213,20 +191,17 @@ class BearerAuthenticationApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 201:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse201',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
+        } catch (ApiException $apiException) {
+            if ($apiException->getCode() === 201) {
+                $data = ObjectSerializer::deserialize(
+                    $apiException->getResponseBody(),
+                    \OpenAPI\Client\Sezzle\InlineResponse201::class,
+                    $apiException->getResponseHeaders()
+                );
+                $apiException->setResponseObject($data);
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -238,15 +213,12 @@ class BearerAuthenticationApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject $inline_object (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV1AuthenticationAsync($inline_object)
+    public function postV1AuthenticationAsync($inline_object): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV1AuthenticationAsyncWithHttpInfo($inline_object)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -258,17 +230,16 @@ class BearerAuthenticationApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject $inline_object (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV1AuthenticationAsyncWithHttpInfo($inline_object)
+    public function postV1AuthenticationAsyncWithHttpInfo($inline_object): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse201';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse201::class;
         $request = $this->postV1AuthenticationRequest($inline_object);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -281,7 +252,7 @@ class BearerAuthenticationApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -305,12 +276,11 @@ class BearerAuthenticationApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject $inline_object (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV1AuthenticationRequest($inline_object)
+    public function postV1AuthenticationRequest($inline_object): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'inline_object' is set
-        if ($inline_object === null || (is_array($inline_object) && count($inline_object) === 0)) {
+        if ($inline_object === null || (is_array($inline_object) && $inline_object === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $inline_object when calling postV1Authentication'
             );
@@ -345,7 +315,7 @@ class BearerAuthenticationApi
             } else {
                 $httpBody = $inline_object;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -357,6 +327,7 @@ class BearerAuthenticationApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -385,7 +356,7 @@ class BearerAuthenticationApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -397,7 +368,7 @@ class BearerAuthenticationApi
      * @throws \RuntimeException on file opening failure
      * @return array of http client options
      */
-    protected function createHttpClientOption()
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

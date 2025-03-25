@@ -50,42 +50,24 @@ use OpenAPI\Client\ObjectSerializer;
  */
 class OrderApi
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected \GuzzleHttp\ClientInterface $client;
+
+    protected \OpenAPI\Client\Configuration $config;
+
+    protected \OpenAPI\Client\HeaderSelector $headerSelector;
 
     /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        Configuration $configuration = null,
+        HeaderSelector $headerSelector = null,
+        protected $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
-        $this->hostIndex = $hostIndex;
+        $this->config = $configuration ?: new Configuration();
+        $this->headerSelector = $headerSelector ?: new HeaderSelector();
     }
 
     /**
@@ -108,10 +90,7 @@ class OrderApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): \OpenAPI\Client\Configuration
     {
         return $this->config;
     }
@@ -125,9 +104,8 @@ class OrderApi
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return void
      */
-    public function deleteV2DeleteCheckoutByOrder($order_uuid)
+    public function deleteV2DeleteCheckoutByOrder($order_uuid): void
     {
         $this->deleteV2DeleteCheckoutByOrderWithHttpInfo($order_uuid);
     }
@@ -143,7 +121,7 @@ class OrderApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteV2DeleteCheckoutByOrderWithHttpInfo($order_uuid)
+    public function deleteV2DeleteCheckoutByOrderWithHttpInfo($order_uuid): array
     {
         $request = $this->deleteV2DeleteCheckoutByOrderRequest($order_uuid);
 
@@ -154,14 +132,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -185,47 +163,23 @@ class OrderApi
 
             return [null, $statusCode, $response->getHeaders()];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -237,15 +191,12 @@ class OrderApi
      * @param  string $order_uuid Order UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteV2DeleteCheckoutByOrderAsync($order_uuid)
+    public function deleteV2DeleteCheckoutByOrderAsync($order_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->deleteV2DeleteCheckoutByOrderAsyncWithHttpInfo($order_uuid)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -257,19 +208,16 @@ class OrderApi
      * @param  string $order_uuid Order UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteV2DeleteCheckoutByOrderAsyncWithHttpInfo($order_uuid)
+    public function deleteV2DeleteCheckoutByOrderAsyncWithHttpInfo($order_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         $request = $this->deleteV2DeleteCheckoutByOrderRequest($order_uuid);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
-                },
-                function ($exception) {
+                fn ($response): array => [null, $response->getStatusCode(), $response->getHeaders()],
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -293,12 +241,11 @@ class OrderApi
      * @param  string $order_uuid Order UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function deleteV2DeleteCheckoutByOrderRequest($order_uuid)
+    public function deleteV2DeleteCheckoutByOrderRequest($order_uuid): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling deleteV2DeleteCheckoutByOrder'
             );
@@ -314,13 +261,11 @@ class OrderApi
 
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -335,7 +280,7 @@ class OrderApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -347,6 +292,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -380,7 +326,7 @@ class OrderApi
 
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -399,7 +345,7 @@ class OrderApi
      */
     public function getV2Order($order_uuid)
     {
-        list($response) = $this->getV2OrderWithHttpInfo($order_uuid);
+        [$response] = $this->getV2OrderWithHttpInfo($order_uuid);
 
         return $response;
     }
@@ -426,14 +372,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -464,22 +410,11 @@ class OrderApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\SessionStatus', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\SessionStatus::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -494,7 +429,7 @@ class OrderApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+            $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -507,38 +442,30 @@ class OrderApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\SessionStatus',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\SessionStatus::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -550,15 +477,12 @@ class OrderApi
      * @param  string $order_uuid Order UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2OrderAsync($order_uuid)
+    public function getV2OrderAsync($order_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getV2OrderAsyncWithHttpInfo($order_uuid)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -570,17 +494,16 @@ class OrderApi
      * @param  string $order_uuid Order UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2OrderAsyncWithHttpInfo($order_uuid)
+    public function getV2OrderAsyncWithHttpInfo($order_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+        $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
         $request = $this->getV2OrderRequest($order_uuid);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -593,7 +516,7 @@ class OrderApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -617,12 +540,11 @@ class OrderApi
      * @param  string $order_uuid Order UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getV2OrderRequest($order_uuid)
+    public function getV2OrderRequest($order_uuid): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling getV2Order'
             );
@@ -638,13 +560,11 @@ class OrderApi
 
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -659,7 +579,7 @@ class OrderApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -671,6 +591,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -704,7 +625,7 @@ class OrderApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -720,9 +641,8 @@ class OrderApi
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return void
      */
-    public function patchV2Checkout($order_uuid, $inline_object1)
+    public function patchV2Checkout($order_uuid, $inline_object1): void
     {
         $this->patchV2CheckoutWithHttpInfo($order_uuid, $inline_object1);
     }
@@ -739,7 +659,7 @@ class OrderApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function patchV2CheckoutWithHttpInfo($order_uuid, $inline_object1)
+    public function patchV2CheckoutWithHttpInfo($order_uuid, $inline_object1): array
     {
         $request = $this->patchV2CheckoutRequest($order_uuid, $inline_object1);
 
@@ -750,14 +670,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -781,47 +701,23 @@ class OrderApi
 
             return [null, $statusCode, $response->getHeaders()];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -834,15 +730,12 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject1 $inline_object1 (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function patchV2CheckoutAsync($order_uuid, $inline_object1)
+    public function patchV2CheckoutAsync($order_uuid, $inline_object1): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->patchV2CheckoutAsyncWithHttpInfo($order_uuid, $inline_object1)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -855,19 +748,16 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject1 $inline_object1 (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function patchV2CheckoutAsyncWithHttpInfo($order_uuid, $inline_object1)
+    public function patchV2CheckoutAsyncWithHttpInfo($order_uuid, $inline_object1): \GuzzleHttp\Promise\PromiseInterface
     {
         $request = $this->patchV2CheckoutRequest($order_uuid, $inline_object1);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
-                },
-                function ($exception) {
+                fn ($response): array => [null, $response->getStatusCode(), $response->getHeaders()],
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -892,18 +782,18 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject1 $inline_object1 (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function patchV2CheckoutRequest($order_uuid, $inline_object1)
+    public function patchV2CheckoutRequest($order_uuid, $inline_object1): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling patchV2Checkout'
             );
         }
+
         // verify the required parameter 'inline_object1' is set
-        if ($inline_object1 === null || (is_array($inline_object1) && count($inline_object1) === 0)) {
+        if ($inline_object1 === null || (is_array($inline_object1) && $inline_object1 === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $inline_object1 when calling patchV2Checkout'
             );
@@ -919,13 +809,11 @@ class OrderApi
 
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -946,7 +834,7 @@ class OrderApi
             } else {
                 $httpBody = $inline_object1;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -958,6 +846,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -991,7 +880,7 @@ class OrderApi
 
         return new Request(
             'PATCH',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1012,7 +901,7 @@ class OrderApi
      */
     public function postV2CaptureByOrder($order_uuid, $sezzle_request_id = null, $inline_object2 = null)
     {
-        list($response) = $this->postV2CaptureByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $inline_object2);
+        [$response] = $this->postV2CaptureByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $inline_object2);
 
         return $response;
     }
@@ -1041,14 +930,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -1072,53 +961,20 @@ class OrderApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse2002' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\InlineResponse2002::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2002', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse2002::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1133,7 +989,7 @@ class OrderApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2002';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse2002::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1146,56 +1002,32 @@ class OrderApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse2002',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\InlineResponse2002::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -1209,15 +1041,12 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject2 $inline_object2 (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2CaptureByOrderAsync($order_uuid, $sezzle_request_id = null, $inline_object2 = null)
+    public function postV2CaptureByOrderAsync($order_uuid, $sezzle_request_id = null, $inline_object2 = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2CaptureByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id, $inline_object2)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -1231,17 +1060,16 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject2 $inline_object2 (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2CaptureByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $inline_object2 = null)
+    public function postV2CaptureByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $inline_object2 = null): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2002';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse2002::class;
         $request = $this->postV2CaptureByOrderRequest($order_uuid, $sezzle_request_id, $inline_object2);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -1254,7 +1082,7 @@ class OrderApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -1280,12 +1108,11 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject2 $inline_object2 (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2CaptureByOrderRequest($order_uuid, $sezzle_request_id = null, $inline_object2 = null)
+    public function postV2CaptureByOrderRequest($order_uuid, $sezzle_request_id = null, $inline_object2 = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling postV2CaptureByOrder'
             );
@@ -1305,13 +1132,11 @@ class OrderApi
         }
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -1332,7 +1157,7 @@ class OrderApi
             } else {
                 $httpBody = $inline_object2;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1344,6 +1169,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -1377,7 +1203,7 @@ class OrderApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1398,7 +1224,7 @@ class OrderApi
      */
     public function postV2ReauthorizeByOrder($order_uuid, $sezzle_request_id = null, $price = null)
     {
-        list($response) = $this->postV2ReauthorizeByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $price);
+        [$response] = $this->postV2ReauthorizeByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $price);
 
         return $response;
     }
@@ -1427,14 +1253,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -1465,46 +1291,13 @@ class OrderApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\SessionStatus', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\SessionStatus::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1519,7 +1312,7 @@ class OrderApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+            $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1532,56 +1325,32 @@ class OrderApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\SessionStatus',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\SessionStatus::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -1595,15 +1364,12 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Reauthorize request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2ReauthorizeByOrderAsync($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2ReauthorizeByOrderAsync($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2ReauthorizeByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id, $price)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -1617,17 +1383,16 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Reauthorize request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2ReauthorizeByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2ReauthorizeByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+        $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
         $request = $this->postV2ReauthorizeByOrderRequest($order_uuid, $sezzle_request_id, $price);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -1640,7 +1405,7 @@ class OrderApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -1666,12 +1431,11 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Reauthorize request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2ReauthorizeByOrderRequest($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2ReauthorizeByOrderRequest($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling postV2ReauthorizeByOrder'
             );
@@ -1691,13 +1455,11 @@ class OrderApi
         }
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -1718,7 +1480,7 @@ class OrderApi
             } else {
                 $httpBody = $price;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1730,6 +1492,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -1763,7 +1526,7 @@ class OrderApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1784,7 +1547,7 @@ class OrderApi
      */
     public function postV2RefundByOrder($order_uuid, $sezzle_request_id = null, $price = null)
     {
-        list($response) = $this->postV2RefundByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $price);
+        [$response] = $this->postV2RefundByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $price);
 
         return $response;
     }
@@ -1813,14 +1576,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -1844,53 +1607,20 @@ class OrderApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse2002' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\InlineResponse2002::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2002', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse2002::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1905,7 +1635,7 @@ class OrderApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2002';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse2002::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1918,56 +1648,32 @@ class OrderApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse2002',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\InlineResponse2002::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -1981,15 +1687,12 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Refund request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2RefundByOrderAsync($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2RefundByOrderAsync($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2RefundByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id, $price)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -2003,17 +1706,16 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Refund request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2RefundByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2RefundByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2002';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse2002::class;
         $request = $this->postV2RefundByOrderRequest($order_uuid, $sezzle_request_id, $price);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -2026,7 +1728,7 @@ class OrderApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -2052,12 +1754,11 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Refund request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2RefundByOrderRequest($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2RefundByOrderRequest($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling postV2RefundByOrder'
             );
@@ -2077,13 +1778,11 @@ class OrderApi
         }
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -2104,7 +1803,7 @@ class OrderApi
             } else {
                 $httpBody = $price;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -2116,6 +1815,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -2149,7 +1849,7 @@ class OrderApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -2170,7 +1870,7 @@ class OrderApi
      */
     public function postV2ReleaseByOrder($order_uuid, $sezzle_request_id = null, $price = null)
     {
-        list($response) = $this->postV2ReleaseByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $price);
+        [$response] = $this->postV2ReleaseByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $price);
 
         return $response;
     }
@@ -2199,14 +1899,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -2230,53 +1930,20 @@ class OrderApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse2002' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\InlineResponse2002::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2002', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse2002::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -2291,7 +1958,7 @@ class OrderApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2002';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse2002::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -2304,56 +1971,32 @@ class OrderApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse2002',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\InlineResponse2002::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -2367,15 +2010,12 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Release request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2ReleaseByOrderAsync($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2ReleaseByOrderAsync($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2ReleaseByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id, $price)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -2389,17 +2029,16 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Release request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2ReleaseByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2ReleaseByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2002';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse2002::class;
         $request = $this->postV2ReleaseByOrderRequest($order_uuid, $sezzle_request_id, $price);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -2412,7 +2051,7 @@ class OrderApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -2438,12 +2077,11 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\Price $price Release request (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2ReleaseByOrderRequest($order_uuid, $sezzle_request_id = null, $price = null)
+    public function postV2ReleaseByOrderRequest($order_uuid, $sezzle_request_id = null, $price = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling postV2ReleaseByOrder'
             );
@@ -2463,13 +2101,11 @@ class OrderApi
         }
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -2490,7 +2126,7 @@ class OrderApi
             } else {
                 $httpBody = $price;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -2502,6 +2138,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -2535,7 +2172,7 @@ class OrderApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -2556,7 +2193,7 @@ class OrderApi
      */
     public function postV2UpchargeByOrder($order_uuid, $sezzle_request_id = null, $inline_object3 = null)
     {
-        list($response) = $this->postV2UpchargeByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $inline_object3);
+        [$response] = $this->postV2UpchargeByOrderWithHttpInfo($order_uuid, $sezzle_request_id, $inline_object3);
 
         return $response;
     }
@@ -2585,14 +2222,14 @@ class OrderApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -2623,46 +2260,13 @@ class OrderApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\SessionStatus', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\SessionStatus::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -2677,7 +2281,7 @@ class OrderApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+            $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -2690,56 +2294,32 @@ class OrderApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\SessionStatus',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\SessionStatus::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -2753,15 +2333,12 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject3 $inline_object3 (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2UpchargeByOrderAsync($order_uuid, $sezzle_request_id = null, $inline_object3 = null)
+    public function postV2UpchargeByOrderAsync($order_uuid, $sezzle_request_id = null, $inline_object3 = null): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2UpchargeByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id, $inline_object3)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -2775,17 +2352,16 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject3 $inline_object3 (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2UpchargeByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $inline_object3 = null)
+    public function postV2UpchargeByOrderAsyncWithHttpInfo($order_uuid, $sezzle_request_id = null, $inline_object3 = null): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+        $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
         $request = $this->postV2UpchargeByOrderRequest($order_uuid, $sezzle_request_id, $inline_object3);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -2798,7 +2374,7 @@ class OrderApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -2824,12 +2400,11 @@ class OrderApi
      * @param  \OpenAPI\Client\Sezzle\InlineObject3 $inline_object3 (optional)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2UpchargeByOrderRequest($order_uuid, $sezzle_request_id = null, $inline_object3 = null)
+    public function postV2UpchargeByOrderRequest($order_uuid, $sezzle_request_id = null, $inline_object3 = null): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'order_uuid' is set
-        if ($order_uuid === null || (is_array($order_uuid) && count($order_uuid) === 0)) {
+        if ($order_uuid === null || (is_array($order_uuid) && $order_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $order_uuid when calling postV2UpchargeByOrder'
             );
@@ -2849,13 +2424,11 @@ class OrderApi
         }
 
         // path params
-        if ($order_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'order_uuid' . '}',
-                ObjectSerializer::toPathValue($order_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{order_uuid}',
+            ObjectSerializer::toPathValue($order_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -2876,7 +2449,7 @@ class OrderApi
             } else {
                 $httpBody = $inline_object3;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -2888,6 +2461,7 @@ class OrderApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -2921,7 +2495,7 @@ class OrderApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -2933,7 +2507,7 @@ class OrderApi
      * @throws \RuntimeException on file opening failure
      * @return array of http client options
      */
-    protected function createHttpClientOption()
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

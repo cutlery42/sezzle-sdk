@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
+class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -68,7 +68,7 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
       */
     protected static $openAPITypes = [
         'name' => 'string',
-        'price' => '\OpenAPI\Client\Sezzle\Price',
+        'price' => \OpenAPI\Client\Sezzle\Price::class,
         'quantity' => 'int',
         'sku' => 'string',
     ];
@@ -204,19 +204,22 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
         $invalidProperties = [];
 
         if ($this->container['name'] === null) {
             $invalidProperties[] = "'name' can't be null";
         }
+
         if ($this->container['price'] === null) {
             $invalidProperties[] = "'price' can't be null";
         }
+
         if ($this->container['quantity'] === null) {
             $invalidProperties[] = "'quantity' can't be null";
         }
+
         if ($this->container['sku'] === null) {
             $invalidProperties[] = "'sku' can't be null";
         }
@@ -230,9 +233,9 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -249,10 +252,8 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets name
      *
      * @param string $name name
-     *
-     * @return self
      */
-    public function setName($name)
+    public function setName($name): static
     {
         $this->container['name'] = $name;
 
@@ -273,10 +274,8 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets price
      *
      * @param \OpenAPI\Client\Sezzle\Price $price price
-     *
-     * @return self
      */
-    public function setPrice($price)
+    public function setPrice($price): static
     {
         $this->container['price'] = $price;
 
@@ -297,10 +296,8 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets quantity
      *
      * @param int $quantity quantity
-     *
-     * @return self
      */
-    public function setQuantity($quantity)
+    public function setQuantity($quantity): static
     {
         $this->container['quantity'] = $quantity;
 
@@ -321,10 +318,8 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets sku
      *
      * @param string $sku sku
-     *
-     * @return self
      */
-    public function setSku($sku)
+    public function setSku($sku): static
     {
         $this->container['sku'] = $sku;
 
@@ -335,8 +330,6 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -360,8 +353,6 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -376,8 +367,6 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -398,12 +387,10 @@ class LineItem implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

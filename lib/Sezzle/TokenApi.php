@@ -50,42 +50,24 @@ use OpenAPI\Client\ObjectSerializer;
  */
 class TokenApi
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected \GuzzleHttp\ClientInterface $client;
+
+    protected \OpenAPI\Client\Configuration $config;
+
+    protected \OpenAPI\Client\HeaderSelector $headerSelector;
 
     /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        Configuration $configuration = null,
+        HeaderSelector $headerSelector = null,
+        protected $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
-        $this->hostIndex = $hostIndex;
+        $this->config = $configuration ?: new Configuration();
+        $this->headerSelector = $headerSelector ?: new HeaderSelector();
     }
 
     /**
@@ -108,10 +90,7 @@ class TokenApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): \OpenAPI\Client\Configuration
     {
         return $this->config;
     }
@@ -125,9 +104,8 @@ class TokenApi
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return void
      */
-    public function getV2CustomerToken($token)
+    public function getV2CustomerToken($token): void
     {
         $this->getV2CustomerTokenWithHttpInfo($token);
     }
@@ -143,7 +121,7 @@ class TokenApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getV2CustomerTokenWithHttpInfo($token)
+    public function getV2CustomerTokenWithHttpInfo($token): array
     {
         $request = $this->getV2CustomerTokenRequest($token);
 
@@ -154,14 +132,14 @@ class TokenApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -185,11 +163,11 @@ class TokenApi
 
             return [null, $statusCode, $response->getHeaders()];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -201,15 +179,12 @@ class TokenApi
      * @param  string $token Customer initiated token, e.g. generated in mobile app (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2CustomerTokenAsync($token)
+    public function getV2CustomerTokenAsync($token): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getV2CustomerTokenAsyncWithHttpInfo($token)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -221,19 +196,16 @@ class TokenApi
      * @param  string $token Customer initiated token, e.g. generated in mobile app (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2CustomerTokenAsyncWithHttpInfo($token)
+    public function getV2CustomerTokenAsyncWithHttpInfo($token): \GuzzleHttp\Promise\PromiseInterface
     {
         $request = $this->getV2CustomerTokenRequest($token);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
-                },
-                function ($exception) {
+                fn ($response): array => [null, $response->getStatusCode(), $response->getHeaders()],
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -257,12 +229,11 @@ class TokenApi
      * @param  string $token Customer initiated token, e.g. generated in mobile app (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getV2CustomerTokenRequest($token)
+    public function getV2CustomerTokenRequest($token): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'token' is set
-        if ($token === null || (is_array($token) && count($token) === 0)) {
+        if ($token === null || (is_array($token) && $token === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $token when calling getV2CustomerToken'
             );
@@ -278,13 +249,11 @@ class TokenApi
 
 
         // path params
-        if ($token !== null) {
-            $resourcePath = str_replace(
-                '{' . 'token' . '}',
-                ObjectSerializer::toPathValue($token),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{token}',
+            ObjectSerializer::toPathValue($token),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -299,7 +268,7 @@ class TokenApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -311,6 +280,7 @@ class TokenApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -344,7 +314,7 @@ class TokenApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -363,7 +333,7 @@ class TokenApi
      */
     public function getV2SessionToken($token)
     {
-        list($response) = $this->getV2SessionTokenWithHttpInfo($token);
+        [$response] = $this->getV2SessionTokenWithHttpInfo($token);
 
         return $response;
     }
@@ -390,14 +360,14 @@ class TokenApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -421,41 +391,19 @@ class TokenApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Sezzle\Token' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\Token::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\Token', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\Token::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -470,7 +418,7 @@ class TokenApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\Token';
+            $returnType = \OpenAPI\Client\Sezzle\Token::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -483,47 +431,31 @@ class TokenApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\Token',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\Token::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -535,15 +467,12 @@ class TokenApi
      * @param  string $token Merchant initiated token (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2SessionTokenAsync($token)
+    public function getV2SessionTokenAsync($token): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getV2SessionTokenAsyncWithHttpInfo($token)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -555,17 +484,16 @@ class TokenApi
      * @param  string $token Merchant initiated token (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2SessionTokenAsyncWithHttpInfo($token)
+    public function getV2SessionTokenAsyncWithHttpInfo($token): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\Token';
+        $returnType = \OpenAPI\Client\Sezzle\Token::class;
         $request = $this->getV2SessionTokenRequest($token);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -578,7 +506,7 @@ class TokenApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -602,12 +530,11 @@ class TokenApi
      * @param  string $token Merchant initiated token (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getV2SessionTokenRequest($token)
+    public function getV2SessionTokenRequest($token): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'token' is set
-        if ($token === null || (is_array($token) && count($token) === 0)) {
+        if ($token === null || (is_array($token) && $token === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $token when calling getV2SessionToken'
             );
@@ -623,13 +550,11 @@ class TokenApi
 
 
         // path params
-        if ($token !== null) {
-            $resourcePath = str_replace(
-                '{' . 'token' . '}',
-                ObjectSerializer::toPathValue($token),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{token}',
+            ObjectSerializer::toPathValue($token),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -644,7 +569,7 @@ class TokenApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -656,6 +581,7 @@ class TokenApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -689,7 +615,7 @@ class TokenApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -701,7 +627,7 @@ class TokenApi
      * @throws \RuntimeException on file opening failure
      * @return array of http client options
      */
-    protected function createHttpClientOption()
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

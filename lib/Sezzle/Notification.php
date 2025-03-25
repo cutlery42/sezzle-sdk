@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
+class Notification implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -198,11 +198,9 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -211,9 +209,9 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -230,10 +228,8 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets to_sms_phone
      *
      * @param string|null $to_sms_phone to_sms_phone
-     *
-     * @return self
      */
-    public function setToSmsPhone($to_sms_phone)
+    public function setToSmsPhone($to_sms_phone): static
     {
         $this->container['to_sms_phone'] = $to_sms_phone;
 
@@ -254,10 +250,8 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets to_email
      *
      * @param string|null $to_email to_email
-     *
-     * @return self
      */
-    public function setToEmail($to_email)
+    public function setToEmail($to_email): static
     {
         $this->container['to_email'] = $to_email;
 
@@ -278,10 +272,8 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets language
      *
      * @param string|null $language language
-     *
-     * @return self
      */
-    public function setLanguage($language)
+    public function setLanguage($language): static
     {
         $this->container['language'] = $language;
 
@@ -292,8 +284,6 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -317,8 +307,6 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -333,8 +321,6 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -355,12 +341,10 @@ class Notification implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

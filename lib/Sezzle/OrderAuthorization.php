@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializable
+class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -67,7 +67,7 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $openAPITypes = [
-        'authorization_amount' => '\OpenAPI\Client\Sezzle\Price',
+        'authorization_amount' => \OpenAPI\Client\Sezzle\Price::class,
         'approved' => 'bool',
         'expiration' => '\DateTime',
         'releases' => '\OpenAPI\Client\Sezzle\Capture[]',
@@ -216,11 +216,9 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -229,9 +227,9 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -248,10 +246,8 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets authorization_amount
      *
      * @param \OpenAPI\Client\Sezzle\Price|null $authorization_amount authorization_amount
-     *
-     * @return self
      */
-    public function setAuthorizationAmount($authorization_amount)
+    public function setAuthorizationAmount($authorization_amount): static
     {
         $this->container['authorization_amount'] = $authorization_amount;
 
@@ -272,10 +268,8 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets approved
      *
      * @param bool|null $approved approved
-     *
-     * @return self
      */
-    public function setApproved($approved)
+    public function setApproved($approved): static
     {
         $this->container['approved'] = $approved;
 
@@ -296,10 +290,8 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets expiration
      *
      * @param \DateTime|null $expiration expiration
-     *
-     * @return self
      */
-    public function setExpiration($expiration)
+    public function setExpiration($expiration): static
     {
         $this->container['expiration'] = $expiration;
 
@@ -320,10 +312,8 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets releases
      *
      * @param \OpenAPI\Client\Sezzle\Capture[]|null $releases releases
-     *
-     * @return self
      */
-    public function setReleases($releases)
+    public function setReleases($releases): static
     {
         $this->container['releases'] = $releases;
 
@@ -344,10 +334,8 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets captures
      *
      * @param \OpenAPI\Client\Sezzle\Capture[]|null $captures captures
-     *
-     * @return self
      */
-    public function setCaptures($captures)
+    public function setCaptures($captures): static
     {
         $this->container['captures'] = $captures;
 
@@ -368,10 +356,8 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets refunds
      *
      * @param \OpenAPI\Client\Sezzle\Refund[]|null $refunds refunds
-     *
-     * @return self
      */
-    public function setRefunds($refunds)
+    public function setRefunds($refunds): static
     {
         $this->container['refunds'] = $refunds;
 
@@ -382,8 +368,6 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -407,8 +391,6 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -423,8 +405,6 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -445,12 +425,10 @@ class OrderAuthorization implements ModelInterface, ArrayAccess, \JsonSerializab
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

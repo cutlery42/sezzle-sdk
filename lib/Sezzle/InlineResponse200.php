@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializable
+class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -198,11 +198,9 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -211,9 +209,9 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -230,10 +228,8 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Sets uuid
      *
      * @param string|null $uuid uuid
-     *
-     * @return self
      */
-    public function setUuid($uuid)
+    public function setUuid($uuid): static
     {
         $this->container['uuid'] = $uuid;
 
@@ -254,10 +250,8 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Sets expiration
      *
      * @param \DateTime|null $expiration expiration
-     *
-     * @return self
      */
-    public function setExpiration($expiration)
+    public function setExpiration($expiration): static
     {
         $this->container['expiration'] = $expiration;
 
@@ -278,10 +272,8 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Sets links
      *
      * @param \OpenAPI\Client\Sezzle\Link[]|null $links links
-     *
-     * @return self
      */
-    public function setLinks($links)
+    public function setLinks($links): static
     {
         $this->container['links'] = $links;
 
@@ -292,8 +284,6 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -317,8 +307,6 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -333,8 +321,6 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -355,12 +341,10 @@ class InlineResponse200 implements ModelInterface, ArrayAccess, \JsonSerializabl
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

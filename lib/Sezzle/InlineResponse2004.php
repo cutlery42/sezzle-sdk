@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializable
+class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -186,11 +186,9 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -199,9 +197,9 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -218,10 +216,8 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * Sets interest_balance
      *
      * @param float|null $interest_balance interest_balance
-     *
-     * @return self
      */
-    public function setInterestBalance($interest_balance)
+    public function setInterestBalance($interest_balance): static
     {
         $this->container['interest_balance'] = $interest_balance;
 
@@ -232,8 +228,6 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -257,8 +251,6 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -273,8 +265,6 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -295,12 +285,10 @@ class InlineResponse2004 implements ModelInterface, ArrayAccess, \JsonSerializab
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

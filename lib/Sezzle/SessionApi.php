@@ -50,42 +50,24 @@ use OpenAPI\Client\ObjectSerializer;
  */
 class SessionApi
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected \GuzzleHttp\ClientInterface $client;
+
+    protected \OpenAPI\Client\Configuration $config;
+
+    protected \OpenAPI\Client\HeaderSelector $headerSelector;
 
     /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        Configuration $configuration = null,
+        HeaderSelector $headerSelector = null,
+        protected $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
-        $this->hostIndex = $hostIndex;
+        $this->config = $configuration ?: new Configuration();
+        $this->headerSelector = $headerSelector ?: new HeaderSelector();
     }
 
     /**
@@ -108,10 +90,7 @@ class SessionApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): \OpenAPI\Client\Configuration
     {
         return $this->config;
     }
@@ -129,7 +108,7 @@ class SessionApi
      */
     public function getV2Session($session_uuid)
     {
-        list($response) = $this->getV2SessionWithHttpInfo($session_uuid);
+        [$response] = $this->getV2SessionWithHttpInfo($session_uuid);
 
         return $response;
     }
@@ -156,14 +135,14 @@ class SessionApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -199,29 +178,7 @@ class SessionApi
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -236,7 +193,7 @@ class SessionApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+            $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -249,47 +206,31 @@ class SessionApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\SessionStatus',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\SessionStatus::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -301,15 +242,12 @@ class SessionApi
      * @param  string $session_uuid Session UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2SessionAsync($session_uuid)
+    public function getV2SessionAsync($session_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getV2SessionAsyncWithHttpInfo($session_uuid)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -321,17 +259,16 @@ class SessionApi
      * @param  string $session_uuid Session UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2SessionAsyncWithHttpInfo($session_uuid)
+    public function getV2SessionAsyncWithHttpInfo($session_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\SessionStatus';
+        $returnType = \OpenAPI\Client\Sezzle\SessionStatus::class;
         $request = $this->getV2SessionRequest($session_uuid);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -344,7 +281,7 @@ class SessionApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -368,12 +305,11 @@ class SessionApi
      * @param  string $session_uuid Session UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getV2SessionRequest($session_uuid)
+    public function getV2SessionRequest($session_uuid): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'session_uuid' is set
-        if ($session_uuid === null || (is_array($session_uuid) && count($session_uuid) === 0)) {
+        if ($session_uuid === null || (is_array($session_uuid) && $session_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $session_uuid when calling getV2Session'
             );
@@ -389,13 +325,11 @@ class SessionApi
 
 
         // path params
-        if ($session_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'session_uuid' . '}',
-                ObjectSerializer::toPathValue($session_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{session_uuid}',
+            ObjectSerializer::toPathValue($session_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -410,7 +344,7 @@ class SessionApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -422,6 +356,7 @@ class SessionApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -455,7 +390,7 @@ class SessionApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -474,7 +409,7 @@ class SessionApi
      */
     public function postV2Session($session)
     {
-        list($response) = $this->postV2SessionWithHttpInfo($session);
+        [$response] = $this->postV2SessionWithHttpInfo($session);
 
         return $response;
     }
@@ -501,14 +436,14 @@ class SessionApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -532,41 +467,19 @@ class SessionApi
 
             switch ($statusCode) {
                 case 201:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse2011' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\InlineResponse2011::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2011', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse2011::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -581,7 +494,7 @@ class SessionApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2011';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse2011::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -594,47 +507,31 @@ class SessionApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 201:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse2011',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\InlineResponse2011::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -646,15 +543,12 @@ class SessionApi
      * @param  \OpenAPI\Client\Sezzle\Session $session Session request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2SessionAsync($session)
+    public function postV2SessionAsync($session): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2SessionAsyncWithHttpInfo($session)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -666,17 +560,16 @@ class SessionApi
      * @param  \OpenAPI\Client\Sezzle\Session $session Session request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2SessionAsyncWithHttpInfo($session)
+    public function postV2SessionAsyncWithHttpInfo($session): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2011';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse2011::class;
         $request = $this->postV2SessionRequest($session);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -689,7 +582,7 @@ class SessionApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -713,12 +606,11 @@ class SessionApi
      * @param  \OpenAPI\Client\Sezzle\Session $session Session request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2SessionRequest($session)
+    public function postV2SessionRequest($session): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'session' is set
-        if ($session === null || (is_array($session) && count($session) === 0)) {
+        if ($session === null || (is_array($session) && $session === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $session when calling postV2Session'
             );
@@ -753,7 +645,7 @@ class SessionApi
             } else {
                 $httpBody = $session;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -765,6 +657,7 @@ class SessionApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -798,7 +691,7 @@ class SessionApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -810,7 +703,7 @@ class SessionApi
      * @throws \RuntimeException on file opening failure
      * @return array of http client options
      */
-    protected function createHttpClientOption()
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {

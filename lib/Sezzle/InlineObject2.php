@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
+class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -67,7 +67,7 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'capture_amount' => '\OpenAPI\Client\Sezzle\Price',
+        'capture_amount' => \OpenAPI\Client\Sezzle\Price::class,
         'partial_capture' => 'bool',
     ];
 
@@ -192,11 +192,9 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -205,9 +203,9 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -224,10 +222,8 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets capture_amount
      *
      * @param \OpenAPI\Client\Sezzle\Price|null $capture_amount capture_amount
-     *
-     * @return self
      */
-    public function setCaptureAmount($capture_amount)
+    public function setCaptureAmount($capture_amount): static
     {
         $this->container['capture_amount'] = $capture_amount;
 
@@ -248,10 +244,8 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets partial_capture
      *
      * @param bool|null $partial_capture partial_capture
-     *
-     * @return self
      */
-    public function setPartialCapture($partial_capture)
+    public function setPartialCapture($partial_capture): static
     {
         $this->container['partial_capture'] = $partial_capture;
 
@@ -262,8 +256,6 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -287,8 +279,6 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -303,8 +293,6 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -325,12 +313,10 @@ class InlineObject2 implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

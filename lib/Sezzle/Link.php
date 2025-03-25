@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class Link implements ModelInterface, ArrayAccess, \JsonSerializable
+class Link implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -198,11 +198,9 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -211,9 +209,9 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -230,10 +228,8 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets href
      *
      * @param string|null $href href
-     *
-     * @return self
      */
-    public function setHref($href)
+    public function setHref($href): static
     {
         $this->container['href'] = $href;
 
@@ -254,10 +250,8 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets method
      *
      * @param string|null $method method
-     *
-     * @return self
      */
-    public function setMethod($method)
+    public function setMethod($method): static
     {
         $this->container['method'] = $method;
 
@@ -278,10 +272,8 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets rel
      *
      * @param string|null $rel rel
-     *
-     * @return self
      */
-    public function setRel($rel)
+    public function setRel($rel): static
     {
         $this->container['rel'] = $rel;
 
@@ -292,8 +284,6 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -317,8 +307,6 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -333,8 +321,6 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -355,12 +341,10 @@ class Link implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

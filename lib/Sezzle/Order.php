@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class Order implements ModelInterface, ArrayAccess, \JsonSerializable
+class Order implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -73,11 +73,11 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
         'items' => '\OpenAPI\Client\Sezzle\LineItem[]',
         'discounts' => '\OpenAPI\Client\Sezzle\Discount[]',
         'metadata' => 'array<string,string>',
-        'shipping_amount' => '\OpenAPI\Client\Sezzle\Price',
-        'tax_amount' => '\OpenAPI\Client\Sezzle\Price',
+        'shipping_amount' => \OpenAPI\Client\Sezzle\Price::class,
+        'tax_amount' => \OpenAPI\Client\Sezzle\Price::class,
         'checkout_expiration' => '\DateTime',
         'intent' => 'string',
-        'order_amount' => '\OpenAPI\Client\Sezzle\Price',
+        'order_amount' => \OpenAPI\Client\Sezzle\Price::class,
     ];
 
     /**
@@ -246,11 +246,9 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
-        $invalidProperties = [];
-
-        return $invalidProperties;
+        return [];
     }
 
     /**
@@ -259,22 +257,19 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
-    /**
-     * @return Price|null
-     */
     public function getOrderAmount(): ?Price
     {
         return $this->container['order_amount'];
     }
 
-    public function setOrderAmount(?Price $orderAmount): self
+    public function setOrderAmount(?Price $price): self
     {
-        $this->container['order_amount'] = $orderAmount;
+        $this->container['order_amount'] = $price;
 
         return $this;
     }
@@ -293,10 +288,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets Intent_id
      *
      * @param string|null $intent Intent
-     *
-     * @return self
      */
-    public function setIntent($intent)
+    public function setIntent($intent): static
     {
         $this->container['intent'] = $intent;
 
@@ -317,10 +310,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets reference_id
      *
      * @param string|null $reference_id reference_id
-     *
-     * @return self
      */
-    public function setReferenceId($reference_id)
+    public function setReferenceId($reference_id): static
     {
         $this->container['reference_id'] = $reference_id;
 
@@ -341,10 +332,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets description
      *
      * @param string|null $description description
-     *
-     * @return self
      */
-    public function setDescription($description)
+    public function setDescription($description): static
     {
         $this->container['description'] = $description;
 
@@ -365,10 +354,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets requires_shipping_info
      *
      * @param bool|null $requires_shipping_info requires_shipping_info
-     *
-     * @return self
      */
-    public function setRequiresShippingInfo($requires_shipping_info)
+    public function setRequiresShippingInfo($requires_shipping_info): static
     {
         $this->container['requires_shipping_info'] = $requires_shipping_info;
 
@@ -389,10 +376,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets items
      *
      * @param \OpenAPI\Client\Sezzle\LineItem[]|null $items items
-     *
-     * @return self
      */
-    public function setItems($items)
+    public function setItems($items): static
     {
         $this->container['items'] = $items;
 
@@ -413,10 +398,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets discounts
      *
      * @param \OpenAPI\Client\Sezzle\Discount[]|null $discounts discounts
-     *
-     * @return self
      */
-    public function setDiscounts($discounts)
+    public function setDiscounts($discounts): static
     {
         $this->container['discounts'] = $discounts;
 
@@ -437,10 +420,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets metadata
      *
      * @param array<string,string>|null $metadata metadata
-     *
-     * @return self
      */
-    public function setMetadata($metadata)
+    public function setMetadata($metadata): static
     {
         $this->container['metadata'] = $metadata;
 
@@ -461,10 +442,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets shipping_amount
      *
      * @param \OpenAPI\Client\Sezzle\Price|null $shipping_amount shipping_amount
-     *
-     * @return self
      */
-    public function setShippingAmount($shipping_amount)
+    public function setShippingAmount($shipping_amount): static
     {
         $this->container['shipping_amount'] = $shipping_amount;
 
@@ -485,10 +464,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets tax_amount
      *
      * @param \OpenAPI\Client\Sezzle\Price|null $tax_amount tax_amount
-     *
-     * @return self
      */
-    public function setTaxAmount($tax_amount)
+    public function setTaxAmount($tax_amount): static
     {
         $this->container['tax_amount'] = $tax_amount;
 
@@ -509,10 +486,8 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets checkout_expiration
      *
      * @param \DateTime|null $checkout_expiration checkout_expiration
-     *
-     * @return self
      */
-    public function setCheckoutExpiration($checkout_expiration)
+    public function setCheckoutExpiration($checkout_expiration): static
     {
         $this->container['checkout_expiration'] = $checkout_expiration;
 
@@ -523,8 +498,6 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -548,8 +521,6 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -564,8 +535,6 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -586,12 +555,10 @@ class Order implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

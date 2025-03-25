@@ -43,7 +43,7 @@ use OpenAPI\Client\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class Session implements ModelInterface, ArrayAccess, \JsonSerializable
+class Session implements ModelInterface, ArrayAccess, \JsonSerializable, \Stringable
 {
     public const DISCRIMINATOR = null;
 
@@ -67,8 +67,8 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
-        'cancel_url' => '\OpenAPI\Client\Sezzle\SessionCancelUrl',
-        'complete_url' => '\OpenAPI\Client\Sezzle\SessionCancelUrl',
+        'cancel_url' => \OpenAPI\Client\Sezzle\SessionCancelUrl::class,
+        'complete_url' => \OpenAPI\Client\Sezzle\SessionCancelUrl::class,
         'customer' => 'object',
         'order' => 'object',
     ];
@@ -204,13 +204,14 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return array invalid properties with reasons
      */
-    public function listInvalidProperties()
+    public function listInvalidProperties(): array
     {
         $invalidProperties = [];
 
         if ($this->container['cancel_url'] === null) {
             $invalidProperties[] = "'cancel_url' can't be null";
         }
+
         if ($this->container['complete_url'] === null) {
             $invalidProperties[] = "'complete_url' can't be null";
         }
@@ -224,9 +225,9 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return bool True if all properties are valid
      */
-    public function valid()
+    public function valid(): bool
     {
-        return count($this->listInvalidProperties()) === 0;
+        return $this->listInvalidProperties() === [];
     }
 
     /**
@@ -243,10 +244,8 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets cancel_url
      *
      * @param \OpenAPI\Client\Sezzle\SessionCancelUrl $cancel_url cancel_url
-     *
-     * @return self
      */
-    public function setCancelUrl($cancel_url)
+    public function setCancelUrl($cancel_url): static
     {
         $this->container['cancel_url'] = $cancel_url;
 
@@ -267,10 +266,8 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets complete_url
      *
      * @param \OpenAPI\Client\Sezzle\SessionCancelUrl $complete_url complete_url
-     *
-     * @return self
      */
-    public function setCompleteUrl($complete_url)
+    public function setCompleteUrl($complete_url): static
     {
         $this->container['complete_url'] = $complete_url;
 
@@ -291,10 +288,8 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets customer
      *
      * @param object|null $customer customer
-     *
-     * @return self
      */
-    public function setCustomer($customer)
+    public function setCustomer($customer): static
     {
         $this->container['customer'] = $customer;
 
@@ -315,10 +310,8 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      * Sets order
      *
      * @param object|null $order order
-     *
-     * @return self
      */
-    public function setOrder($order)
+    public function setOrder($order): static
     {
         $this->container['order'] = $order;
 
@@ -329,8 +322,6 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      * Returns true if offset exists. False otherwise.
      *
      * @param int $offset Offset
-     *
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -354,8 +345,6 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @param int|null $offset Offset
      * @param mixed    $value  Value to be set
-     *
-     * @return void
      */
     public function offsetSet($offset, $value): void
     {
@@ -370,8 +359,6 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
      * Unsets offset.
      *
      * @param int $offset Offset
-     *
-     * @return void
      */
     public function offsetUnset($offset): void
     {
@@ -392,12 +379,10 @@ class Session implements ModelInterface, ArrayAccess, \JsonSerializable
 
     /**
      * Gets the string presentation of the object
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return json_encode(
+        return (string) json_encode(
             ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );

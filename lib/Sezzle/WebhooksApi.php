@@ -50,42 +50,24 @@ use OpenAPI\Client\ObjectSerializer;
  */
 class WebhooksApi
 {
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected \GuzzleHttp\ClientInterface $client;
+
+    protected \OpenAPI\Client\Configuration $config;
+
+    protected \OpenAPI\Client\HeaderSelector $headerSelector;
 
     /**
-     * @var Configuration
-     */
-    protected $config;
-
-    /**
-     * @var HeaderSelector
-     */
-    protected $headerSelector;
-
-    /**
-     * @var int Host index
-     */
-    protected $hostIndex;
-
-    /**
-     * @param ClientInterface $client
-     * @param Configuration   $config
-     * @param HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null,
-        $hostIndex = 0
+        Configuration $configuration = null,
+        HeaderSelector $headerSelector = null,
+        protected $hostIndex = 0
     ) {
         $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
-        $this->hostIndex = $hostIndex;
+        $this->config = $configuration ?: new Configuration();
+        $this->headerSelector = $headerSelector ?: new HeaderSelector();
     }
 
     /**
@@ -108,10 +90,7 @@ class WebhooksApi
         return $this->hostIndex;
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): \OpenAPI\Client\Configuration
     {
         return $this->config;
     }
@@ -125,9 +104,8 @@ class WebhooksApi
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return void
      */
-    public function deleteV2Webhooks($webhooks_uuid)
+    public function deleteV2Webhooks($webhooks_uuid): void
     {
         $this->deleteV2WebhooksWithHttpInfo($webhooks_uuid);
     }
@@ -143,7 +121,7 @@ class WebhooksApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function deleteV2WebhooksWithHttpInfo($webhooks_uuid)
+    public function deleteV2WebhooksWithHttpInfo($webhooks_uuid): array
     {
         $request = $this->deleteV2WebhooksRequest($webhooks_uuid);
 
@@ -154,14 +132,14 @@ class WebhooksApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -185,29 +163,21 @@ class WebhooksApi
 
             return [null, $statusCode, $response->getHeaders()];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -219,15 +189,12 @@ class WebhooksApi
      * @param  string $webhooks_uuid Webhooks UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteV2WebhooksAsync($webhooks_uuid)
+    public function deleteV2WebhooksAsync($webhooks_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->deleteV2WebhooksAsyncWithHttpInfo($webhooks_uuid)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -239,19 +206,16 @@ class WebhooksApi
      * @param  string $webhooks_uuid Webhooks UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function deleteV2WebhooksAsyncWithHttpInfo($webhooks_uuid)
+    public function deleteV2WebhooksAsyncWithHttpInfo($webhooks_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         $request = $this->deleteV2WebhooksRequest($webhooks_uuid);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
-                },
-                function ($exception) {
+                fn ($response): array => [null, $response->getStatusCode(), $response->getHeaders()],
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -275,12 +239,11 @@ class WebhooksApi
      * @param  string $webhooks_uuid Webhooks UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function deleteV2WebhooksRequest($webhooks_uuid)
+    public function deleteV2WebhooksRequest($webhooks_uuid): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'webhooks_uuid' is set
-        if ($webhooks_uuid === null || (is_array($webhooks_uuid) && count($webhooks_uuid) === 0)) {
+        if ($webhooks_uuid === null || (is_array($webhooks_uuid) && $webhooks_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $webhooks_uuid when calling deleteV2Webhooks'
             );
@@ -296,13 +259,11 @@ class WebhooksApi
 
 
         // path params
-        if ($webhooks_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'webhooks_uuid' . '}',
-                ObjectSerializer::toPathValue($webhooks_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{webhooks_uuid}',
+            ObjectSerializer::toPathValue($webhooks_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -317,7 +278,7 @@ class WebhooksApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -329,6 +290,7 @@ class WebhooksApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -362,7 +324,7 @@ class WebhooksApi
 
         return new Request(
             'DELETE',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -381,7 +343,7 @@ class WebhooksApi
      */
     public function getV2Webhook($webhooks_uuid)
     {
-        list($response) = $this->getV2WebhookWithHttpInfo($webhooks_uuid);
+        [$response] = $this->getV2WebhookWithHttpInfo($webhooks_uuid);
 
         return $response;
     }
@@ -408,14 +370,14 @@ class WebhooksApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -451,17 +413,6 @@ class WebhooksApi
                         $response->getHeaders(),
                     ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 404:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -489,38 +440,30 @@ class WebhooksApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 404:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -532,15 +475,12 @@ class WebhooksApi
      * @param  string $webhooks_uuid Webhooks UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2WebhookAsync($webhooks_uuid)
+    public function getV2WebhookAsync($webhooks_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getV2WebhookAsyncWithHttpInfo($webhooks_uuid)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -552,9 +492,8 @@ class WebhooksApi
      * @param  string $webhooks_uuid Webhooks UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2WebhookAsyncWithHttpInfo($webhooks_uuid)
+    public function getV2WebhookAsyncWithHttpInfo($webhooks_uuid): \GuzzleHttp\Promise\PromiseInterface
     {
         $returnType = 'object';
         $request = $this->getV2WebhookRequest($webhooks_uuid);
@@ -562,7 +501,7 @@ class WebhooksApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -575,7 +514,7 @@ class WebhooksApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -599,12 +538,11 @@ class WebhooksApi
      * @param  string $webhooks_uuid Webhooks UUID (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getV2WebhookRequest($webhooks_uuid)
+    public function getV2WebhookRequest($webhooks_uuid): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'webhooks_uuid' is set
-        if ($webhooks_uuid === null || (is_array($webhooks_uuid) && count($webhooks_uuid) === 0)) {
+        if ($webhooks_uuid === null || (is_array($webhooks_uuid) && $webhooks_uuid === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $webhooks_uuid when calling getV2Webhook'
             );
@@ -620,13 +558,11 @@ class WebhooksApi
 
 
         // path params
-        if ($webhooks_uuid !== null) {
-            $resourcePath = str_replace(
-                '{' . 'webhooks_uuid' . '}',
-                ObjectSerializer::toPathValue($webhooks_uuid),
-                $resourcePath
-            );
-        }
+        $resourcePath = str_replace(
+            '{webhooks_uuid}',
+            ObjectSerializer::toPathValue($webhooks_uuid),
+            $resourcePath
+        );
 
 
         if ($multipart) {
@@ -641,7 +577,7 @@ class WebhooksApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -653,6 +589,7 @@ class WebhooksApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -686,7 +623,7 @@ class WebhooksApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -704,7 +641,7 @@ class WebhooksApi
      */
     public function getV2Webhooks()
     {
-        list($response) = $this->getV2WebhooksWithHttpInfo();
+        [$response] = $this->getV2WebhooksWithHttpInfo();
 
         return $response;
     }
@@ -730,14 +667,14 @@ class WebhooksApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -761,29 +698,7 @@ class WebhooksApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -811,38 +726,22 @@ class WebhooksApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -853,15 +752,12 @@ class WebhooksApi
      *
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2WebhooksAsync()
+    public function getV2WebhooksAsync(): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->getV2WebhooksAsyncWithHttpInfo()
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -872,9 +768,8 @@ class WebhooksApi
      *
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getV2WebhooksAsyncWithHttpInfo()
+    public function getV2WebhooksAsyncWithHttpInfo(): \GuzzleHttp\Promise\PromiseInterface
     {
         $returnType = 'object[]';
         $request = $this->getV2WebhooksRequest();
@@ -882,7 +777,7 @@ class WebhooksApi
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -895,7 +790,7 @@ class WebhooksApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -918,9 +813,8 @@ class WebhooksApi
      *
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function getV2WebhooksRequest()
+    public function getV2WebhooksRequest(): \GuzzleHttp\Psr7\Request
     {
 
         $resourcePath = '/webhooks';
@@ -946,7 +840,7 @@ class WebhooksApi
         }
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -958,6 +852,7 @@ class WebhooksApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -991,7 +886,7 @@ class WebhooksApi
 
         return new Request(
             'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1006,9 +901,8 @@ class WebhooksApi
      *
      * @throws \OpenAPI\Client\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return void
      */
-    public function postV2WebhookTest($webhook_test)
+    public function postV2WebhookTest($webhook_test): void
     {
         $this->postV2WebhookTestWithHttpInfo($webhook_test);
     }
@@ -1024,7 +918,7 @@ class WebhooksApi
      * @throws \InvalidArgumentException
      * @return array of null, HTTP status code, HTTP response headers (array of strings)
      */
-    public function postV2WebhookTestWithHttpInfo($webhook_test)
+    public function postV2WebhookTestWithHttpInfo($webhook_test): array
     {
         $request = $this->postV2WebhookTestRequest($webhook_test);
 
@@ -1035,14 +929,14 @@ class WebhooksApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -1066,29 +960,21 @@ class WebhooksApi
 
             return [null, $statusCode, $response->getHeaders()];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -1100,15 +986,12 @@ class WebhooksApi
      * @param  \OpenAPI\Client\Sezzle\WebhookTest $webhook_test request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2WebhookTestAsync($webhook_test)
+    public function postV2WebhookTestAsync($webhook_test): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2WebhookTestAsyncWithHttpInfo($webhook_test)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -1120,19 +1003,16 @@ class WebhooksApi
      * @param  \OpenAPI\Client\Sezzle\WebhookTest $webhook_test request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2WebhookTestAsyncWithHttpInfo($webhook_test)
+    public function postV2WebhookTestAsyncWithHttpInfo($webhook_test): \GuzzleHttp\Promise\PromiseInterface
     {
         $request = $this->postV2WebhookTestRequest($webhook_test);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
-                },
-                function ($exception) {
+                fn ($response): array => [null, $response->getStatusCode(), $response->getHeaders()],
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -1156,12 +1036,11 @@ class WebhooksApi
      * @param  \OpenAPI\Client\Sezzle\WebhookTest $webhook_test request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2WebhookTestRequest($webhook_test)
+    public function postV2WebhookTestRequest($webhook_test): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'webhook_test' is set
-        if ($webhook_test === null || (is_array($webhook_test) && count($webhook_test) === 0)) {
+        if ($webhook_test === null || (is_array($webhook_test) && $webhook_test === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $webhook_test when calling postV2WebhookTest'
             );
@@ -1196,7 +1075,7 @@ class WebhooksApi
             } else {
                 $httpBody = $webhook_test;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1208,6 +1087,7 @@ class WebhooksApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -1241,7 +1121,7 @@ class WebhooksApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1260,7 +1140,7 @@ class WebhooksApi
      */
     public function postV2Webhooks($webhook)
     {
-        list($response) = $this->postV2WebhooksWithHttpInfo($webhook);
+        [$response] = $this->postV2WebhooksWithHttpInfo($webhook);
 
         return $response;
     }
@@ -1287,14 +1167,14 @@ class WebhooksApi
                 $response = $this->client->send($request, $options);
             } catch (RequestException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() instanceof \Psr\Http\Message\ResponseInterface ? (string) $e->getResponse()->getBody() : null
                 );
             } catch (ConnectException $e) {
                 throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
+                    sprintf('[%d] %s', $e->getCode(), $e->getMessage()),
                     (int) $e->getCode(),
                     null,
                     null
@@ -1318,41 +1198,19 @@ class WebhooksApi
 
             switch ($statusCode) {
                 case 200:
-                    if ('\OpenAPI\Client\Sezzle\InlineResponse2003' === '\SplFileObject') {
+                    if (\OpenAPI\Client\Sezzle\InlineResponse2003::class === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
                         $content = (string) $response->getBody();
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\OpenAPI\Client\Sezzle\InlineResponse2003', []),
+                        ObjectSerializer::deserialize($content, \OpenAPI\Client\Sezzle\InlineResponse2003::class, []),
                         $response->getStatusCode(),
                         $response->getHeaders(),
                     ];
                 case 400:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 401:
-                    if ('object[]' === '\SplFileObject') {
-                        $content = $response->getBody(); //stream goes to serializer
-                    } else {
-                        $content = (string) $response->getBody();
-                    }
-
-                    return [
-                        ObjectSerializer::deserialize($content, 'object[]', []),
-                        $response->getStatusCode(),
-                        $response->getHeaders(),
-                    ];
                 case 422:
                     if ('object[]' === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
@@ -1367,7 +1225,7 @@ class WebhooksApi
                     ];
             }
 
-            $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2003';
+            $returnType = \OpenAPI\Client\Sezzle\InlineResponse2003::class;
             if ($returnType === '\SplFileObject') {
                 $content = $response->getBody(); //stream goes to serializer
             } else {
@@ -1380,47 +1238,31 @@ class WebhooksApi
                 $response->getHeaders(),
             ];
 
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
+        } catch (ApiException $apiException) {
+            switch ($apiException->getCode()) {
                 case 200:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        '\OpenAPI\Client\Sezzle\InlineResponse2003',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseBody(),
+                        \OpenAPI\Client\Sezzle\InlineResponse2003::class,
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
                 case 400:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 401:
-                    $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
-                        'object[]',
-                        $e->getResponseHeaders()
-                    );
-                    $e->setResponseObject($data);
-
-                    break;
                 case 422:
                     $data = ObjectSerializer::deserialize(
-                        $e->getResponseBody(),
+                        $apiException->getResponseBody(),
                         'object[]',
-                        $e->getResponseHeaders()
+                        $apiException->getResponseHeaders()
                     );
-                    $e->setResponseObject($data);
+                    $apiException->setResponseObject($data);
 
                     break;
             }
 
-            throw $e;
+            throw $apiException;
         }
     }
 
@@ -1432,15 +1274,12 @@ class WebhooksApi
      * @param  \OpenAPI\Client\Sezzle\Webhook $webhook Webhooks request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2WebhooksAsync($webhook)
+    public function postV2WebhooksAsync($webhook): \GuzzleHttp\Promise\PromiseInterface
     {
         return $this->postV2WebhooksAsyncWithHttpInfo($webhook)
             ->then(
-                function ($response) {
-                    return $response[0];
-                }
+                fn ($response) => $response[0]
             );
     }
 
@@ -1452,17 +1291,16 @@ class WebhooksApi
      * @param  \OpenAPI\Client\Sezzle\Webhook $webhook Webhooks request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function postV2WebhooksAsyncWithHttpInfo($webhook)
+    public function postV2WebhooksAsyncWithHttpInfo($webhook): \GuzzleHttp\Promise\PromiseInterface
     {
-        $returnType = '\OpenAPI\Client\Sezzle\InlineResponse2003';
+        $returnType = \OpenAPI\Client\Sezzle\InlineResponse2003::class;
         $request = $this->postV2WebhooksRequest($webhook);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) use ($returnType): array {
                     if ($returnType === '\SplFileObject') {
                         $content = $response->getBody(); //stream goes to serializer
                     } else {
@@ -1475,7 +1313,7 @@ class WebhooksApi
                         $response->getHeaders(),
                     ];
                 },
-                function ($exception) {
+                function ($exception): void {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
 
@@ -1499,12 +1337,11 @@ class WebhooksApi
      * @param  \OpenAPI\Client\Sezzle\Webhook $webhook Webhooks request (required)
      *
      * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
      */
-    public function postV2WebhooksRequest($webhook)
+    public function postV2WebhooksRequest($webhook): \GuzzleHttp\Psr7\Request
     {
         // verify the required parameter 'webhook' is set
-        if ($webhook === null || (is_array($webhook) && count($webhook) === 0)) {
+        if ($webhook === null || (is_array($webhook) && $webhook === [])) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $webhook when calling postV2Webhooks'
             );
@@ -1539,7 +1376,7 @@ class WebhooksApi
             } else {
                 $httpBody = $webhook;
             }
-        } elseif (count($formParams) > 0) {
+        } elseif ($formParams !== []) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1551,6 +1388,7 @@ class WebhooksApi
                         ];
                     }
                 }
+
                 // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents);
 
@@ -1584,7 +1422,7 @@ class WebhooksApi
 
         return new Request(
             'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $this->config->getHost() . $resourcePath . ($query !== '' && $query !== '0' ? '?' . $query : ''),
             $headers,
             $httpBody
         );
@@ -1596,7 +1434,7 @@ class WebhooksApi
      * @throws \RuntimeException on file opening failure
      * @return array of http client options
      */
-    protected function createHttpClientOption()
+    protected function createHttpClientOption(): array
     {
         $options = [];
         if ($this->config->getDebug()) {
